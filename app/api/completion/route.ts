@@ -41,7 +41,7 @@ export async function POST(req: Request) {
 		case "Free verse":
 			adjustedPrompt = `Please respond in a poetic free verse way.\n${adjustedPrompt}`;
 			break;
-		case "Horny":
+		case "Formal":
 			adjustedPrompt = `Please respond being formal.\n${adjustedPrompt}`;
 			break;
 		case "Poetic":
