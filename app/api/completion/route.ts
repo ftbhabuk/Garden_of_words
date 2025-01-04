@@ -1,11 +1,9 @@
 import { StreamingTextResponse } from "ai";
-import { OpenAIStream } from "ai";
-import OpenAI from "openai";
+import { OpenAI } from "openai";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { PromptService } from "@/app/Services/promptService";
 
-// Initialize rate limiting
 const ratelimit = process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN
     ? new Ratelimit({
           redis: new Redis({
@@ -18,14 +16,18 @@ const ratelimit = process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN
       })
     : false;
 
-// Initialize Groq client
+const apiKey = process.env.GROQ_API_KEY;
+
+if (!apiKey) {
+    throw new Error("GROQ_API_KEY is not defined in the environment variables.");
+}
+
 const groq = new OpenAI({
-    apiKey: process.env.GROQ_API_KEY,
+    apiKey,
     baseURL: "https://api.groq.com/openai/v1",
 });
 
 export async function POST(req: Request) {
-    // Rate limiting check
     if (ratelimit) {
         const ip = req.headers.get("x-real-ip") ?? "local";
         const rl = await ratelimit.limit(ip);
@@ -35,7 +37,6 @@ export async function POST(req: Request) {
         }
     }
 
-    // Parse request body
     const { text, prompt, tag } = await req.json();
     
     if (!prompt) {
@@ -43,15 +44,11 @@ export async function POST(req: Request) {
     }
 
     try {
-        // Build the prompt using our PromptService
         const promptConfig = { text, prompt, tag };
         const finalPrompt = PromptService.buildPrompt(promptConfig);
-
-        // Get the system message from PromptService
         const systemMessage = PromptService.getSystemMessage();
 
-        // Create the stream
-        const response = await groq.chat.completions.create({
+        const stream = await groq.chat.completions.create({
             model: "llama3-8b-8192",
             messages: [
                 { role: "system", content: systemMessage },
@@ -59,9 +56,6 @@ export async function POST(req: Request) {
             ],
             stream: true,
         });
-
-        // Convert the OpenAI stream to a ReadableStream
-        const stream = OpenAIStream(response);
 
         return new StreamingTextResponse(stream);
     } catch (error) {

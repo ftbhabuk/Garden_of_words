@@ -6,6 +6,7 @@ import { useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { toast } from "sonner";
 
+
 export default function ChatComponent() {
     const [text, setText] = useState("");
     const [selectedTag, setSelectedTag] = useState("");
