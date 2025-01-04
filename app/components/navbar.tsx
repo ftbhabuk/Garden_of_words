@@ -1,77 +1,83 @@
-import Link from "next/link"
-import { MaxWidthWrapper } from "./max-width-wrapper"
-import { SignOutButton } from "@clerk/nextjs"
-import { Button,buttonVariants } from "@/app/components/ui/button"
-import { ArrowRight } from "lucide-react"
-import { currentUser } from "@clerk/nextjs/server"
+'use client';
 
-export const Navbar = async () => {
-  const user = await currentUser()
+import Link from "next/link";
+import { MaxWidthWrapper } from "./max-width-wrapper";
+import { SignInButton, SignOutButton, useAuth, useClerk } from "@clerk/nextjs";
+import { Button, buttonVariants } from "./ui/button";
+import { ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
+export const Navbar = () => {
+  const { isSignedIn, isLoaded } = useAuth();
+  const [mounted, setMounted] = useState(false);
+  const { signOut } = useClerk();
+  const router = useRouter();
+
+  // Prevent hydration errors
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Don't render anything until the component is mounted and auth is loaded
+  if (!mounted || !isLoaded) {
+    return null;
+  }
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      router.push("/"); // Redirect to home page after sign out
+      router.refresh(); // Refresh the page to update the auth state
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
 
   return (
-    <nav className="sticky z-[100] h-16 inset-x-0 top-0 w-full border-b border-gray-200 bg-white/80 backdrop-blur-lg transition-all">
-      <MaxWidthWrapper>
+    <nav className="sticky z-[100] h-16 inset-x-0 top-0 w-full border-b border-gray-200 bg-gray-500 backdrop-blur-lg transition-all">
+
+     <MaxWidthWrapper>
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex z-40 font-semibold">
-            Ping<span className="text-brand-700">Panda</span>
+            Garden<span className="text-emerald-600">Words</span>
           </Link>
 
           <div className="h-full flex items-center space-x-4">
-            {user ? (
+            {isSignedIn ? (
               <>
-                <SignOutButton>
-                  <Button size="sm" variant="ghost">
-                    Sign out
-                  </Button>
-                </SignOutButton>
-
-                <Link
-                  href="/dashboard"
-                  className={buttonVariants({
-                    size: "sm",
-                    className: "flex items-center gap-1",
-                  })}
+                <Button 
+                  size="sm" 
+                  variant="ghost"
+                  onClick={handleSignOut}
                 >
-                  Dashboard <ArrowRight className="ml-1.5 size-4" />
-                </Link>
+                  Sign out
+                </Button>
               </>
             ) : (
               <>
-                <Link
-                  href="/pricing"
-                  className={buttonVariants({
-                    size: "sm",
-                    variant: "ghost",
-                  })}
-                >
-                  Pricing
-                </Link>
-                <Link
-                  href="/sign-in"
-                  className={buttonVariants({
-                    size: "sm",
-                    variant: "ghost",
-                  })}
-                >
-                  Sign in
-                </Link>
+                <SignInButton mode="modal">
+                  <Button size="sm" variant="ghost">
+                    Sign in
+                  </Button>
+                </SignInButton>
 
-                <div className="h-8 w-px bg-gray-200" />
+                {/* <div className="h-8 w-px bg-gray-200" /> */}
 
-                <Link
+                {/* <Link
                   href="/sign-up"
                   className={buttonVariants({
                     size: "sm",
                     className: "flex items-center gap-1.5",
                   })}
                 >
-                  Sign up <ArrowRight className="size-4" />
-                </Link>
+                  Sign up
+                </Link> */}
               </>
             )}
           </div>
         </div>
       </MaxWidthWrapper>
     </nav>
-  )
-}
+  );
+};
