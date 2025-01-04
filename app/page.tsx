@@ -1,10 +1,13 @@
 import React from "react";
 import ChatComponent from "./components/ChatComponent";
 import { BookOpen, Feather, History, Users } from "lucide-react";
+import { Navbar } from "./components/navbar";
 
 export default function Home() {
     return (
+      
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950">
+           
       {/* Hero Section */}
       <div className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-[url('/api/placeholder/1920/1080')] bg-cover bg-center opacity-10" />
