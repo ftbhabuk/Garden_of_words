@@ -1,8 +1,9 @@
 import React from "react";
 import ChatComponent from "./components/ChatComponent";
-import { BookOpen, Feather, History, Users,HelpCircle } from "lucide-react";
+import { BookOpen, Feather, History, Users, HelpCircle } from "lucide-react";
 import { Navbar } from "./components/navbar";
 import { MaxWidthWrapper } from "./components/max-width-wrapper";
+import WhatIsPoetry from "./components/WhatIsPoetry";
 
 export default function Home() {
     return (
@@ -22,56 +23,7 @@ export default function Home() {
                     </div>
                 </MaxWidthWrapper>
             </div>
-             {/* What is Poetry Section */}
-             <section className="bg-white dark:bg-gray-800 py-20">
-                <MaxWidthWrapper>
-                    <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center px-4">
-                        <div>
-                            <HelpCircle className="w-12 h-12 mb-6 text-emerald-600" />
-                            <h2 className="text-3xl font-serif mb-6">What Does Poetry Even Mean?</h2>
-                            <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
-                                Poetry is more than just words on a page—it's the art of distilling human 
-                                experience into language that moves, challenges, and transforms. It's where 
-                                emotion meets expression, where ordinary words become extraordinary vessels 
-                                of meaning.
-                            </p>
-                            <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                                Like music without instruments, poetry creates rhythm and melody through 
-                                carefully chosen words. It's the space where metaphors paint pictures, 
-                                where silence between words speaks as loudly as the words themselves, 
-                                and where personal truth becomes universal understanding.
-                            </p>
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="bg-emerald-50 dark:bg-gray-700 p-6 rounded-lg">
-                                <h3 className="text-lg font-serif mb-2 text-emerald-600 dark:text-emerald-400">Expression</h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-300">
-                                    A voice for emotions that prose cannot capture
-                                </p>
-                            </div>
-                            <div className="bg-emerald-50 dark:bg-gray-700 p-6 rounded-lg">
-                                <h3 className="text-lg font-serif mb-2 text-emerald-600 dark:text-emerald-400">Connection</h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-300">
-                                    Bridge between hearts and minds across time
-                                </p>
-                            </div>
-                            <div className="bg-emerald-50 dark:bg-gray-700 p-6 rounded-lg">
-                                <h3 className="text-lg font-serif mb-2 text-emerald-600 dark:text-emerald-400">Discovery</h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-300">
-                                    Journey into deeper understanding of self
-                                </p>
-                            </div>
-                            <div className="bg-emerald-50 dark:bg-gray-700 p-6 rounded-lg">
-                                <h3 className="text-lg font-serif mb-2 text-emerald-600 dark:text-emerald-400">Freedom</h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-300">
-                                    Liberation from conventional language rules
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </MaxWidthWrapper>
-            </section>
-
+            <WhatIsPoetry />
             {/* Poetry Origins Section */}
             <section className="py-20">
                 <MaxWidthWrapper>
