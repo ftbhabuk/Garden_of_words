@@ -1,11 +1,13 @@
 "use client"
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { 
   PenTool, BookOpen, Heart, Brain, 
   Sparkles, Music, Palette, Feather,
   Star, BookMarked, Clock, Users,
-  Lightbulb, Quote, LucideIcon
+  Lightbulb, Quote, LucideIcon,
+  Save,
+  RotateCcw
 } from "lucide-react";
 
 // Enhanced type definitions
@@ -36,6 +38,9 @@ type PoetryFormProps = {
   icon: LucideIcon;
   index: number;
 };
+// 
+
+// 
 
 const QuoteCard = ({ quote, author, index }: { quote: string; author: string; index: number }) => (
   <motion.div
@@ -84,6 +89,7 @@ const TechniqueCard: React.FC<TechniqueProps> = ({ title, description, tips, ico
   </motion.div>
 );
 
+// Updated ExerciseCard with editable example
 const ExerciseCard: React.FC<ExerciseProps> = ({ 
   title, 
   prompt, 
@@ -92,39 +98,124 @@ const ExerciseCard: React.FC<ExerciseProps> = ({
   timeEstimate,
   icon: Icon, 
   index 
-}) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.95 }}
-    whileInView={{ opacity: 1, scale: 1 }}
-    transition={{ duration: 0.6, delay: index * 0.2 }}
-    viewport={{ once: true }}
-    className="bg-white/60 backdrop-blur-sm p-6 rounded-xl shadow-md"
-  >
-    <div className="flex justify-between items-start mb-4">
-      <Icon className="w-6 h-6 text-emerald-600" />
-      <div className="flex items-center gap-2">
-        <span className={`text-sm px-2 py-1 rounded ${
-          difficulty === "Beginner" ? "bg-green-100 text-green-700" :
-          difficulty === "Intermediate" ? "bg-yellow-100 text-yellow-700" :
-          "bg-red-100 text-red-700"
-        }`}>
-          {difficulty}
-        </span>
-        <span className="text-sm text-gray-500 flex items-center gap-1">
-          <Clock className="w-4 h-4" />
-          {timeEstimate}
-        </span>
+}) => {
+  const [text, setText] = useState(example || '');
+  const [savedText, setSavedText] = useState(example || '');
+  const [isSaved, setIsSaved] = useState(true);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // 
+  // Auto-resize textarea
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+  }, [text]);
+
+  // Check if current text differs from saved text
+  useEffect(() => {
+    setIsSaved(text === savedText);
+  }, [text, savedText]);
+
+  const handleSave = () => {
+    setSavedText(text);
+    setIsSaved(true);
+    
+    // Optional: Save to localStorage
+    const key = `poetry-exercise-${title}`;
+    localStorage.setItem(key, text);
+    
+    // Show save animation
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.classList.add('save-flash');
+      setTimeout(() => textarea.classList.remove('save-flash'), 500);
+    }
+  };
+
+  const handleReset = () => {
+    setText(example || '');
+    setSavedText(example || '');
+    setIsSaved(true);
+  };
+  // 
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.6, delay: index * 0.2 }}
+      viewport={{ once: true }}
+      className="bg-white/60 backdrop-blur-sm p-6 rounded-xl shadow-md"
+    >
+      <div className="flex justify-between items-start mb-4">
+        <Icon className="w-6 h-6 text-emerald-600" />
+        <div className="flex items-center gap-2">
+          <span className={`text-sm px-2 py-1 rounded ${
+            difficulty === "Beginner" ? "bg-green-100 text-green-700" :
+            difficulty === "Intermediate" ? "bg-yellow-100 text-yellow-700" :
+            "bg-red-100 text-red-700"
+          }`}>
+            {difficulty}
+          </span>
+          <span className="text-sm text-gray-500 flex items-center gap-1">
+            <Clock className="w-4 h-4" />
+            {timeEstimate}
+          </span>
+        </div>
       </div>
-    </div>
-    <h4 className="text-lg font-medium text-gray-800 mb-2">{title}</h4>
-    <p className="text-gray-600 mb-4">{prompt}</p>
-    {example && (
-      <div className="bg-gray-50 p-4 rounded-lg">
-        <p className="text-gray-700 italic font-serif">{example}</p>
-      </div>
-    )}
-  </motion.div>
-);
+      <h4 className="text-lg font-medium text-gray-800 mb-2">{title}</h4>
+      <p className="text-gray-600 mb-4">{prompt}</p>
+      {example && (
+        <div className="bg-gray-50 p-4 rounded-lg group relative">
+          <textarea
+            ref={textareaRef}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            className="w-full bg-transparent text-gray-700 italic font-serif resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500 rounded p-2 transition-all duration-200"
+            placeholder="Start writing your poem here..."
+            rows={1}
+          />
+          <div className="absolute right-2 bottom-2 flex gap-2">
+            <button
+              onClick={handleReset}
+              className="p-1.5 rounded-full hover:bg-gray-200 transition-colors"
+              title="Reset to original"
+            >
+              <RotateCcw className="w-4 h-4 text-gray-500" />
+            </button>
+            <button
+              onClick={handleSave}
+              disabled={isSaved}
+              className={`p-1.5 rounded-full transition-colors ${
+                isSaved 
+                  ? 'text-emerald-500 hover:bg-emerald-50' 
+                  : 'text-gray-500 hover:bg-gray-200'
+              }`}
+              title="Save changes"
+            >
+              <Save className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
+      <style jsx>{`
+        textarea {
+          overflow-y: hidden;
+        }
+        .save-flash {
+          animation: flash 0.5s;
+        }
+        @keyframes flash {
+          0% { background-color: transparent; }
+          50% { background-color: rgba(16, 185, 129, 0.1); }
+          100% { background-color: transparent; }
+        }
+      `}</style>
+    </motion.div>
+  );
+};
 
 const PoetryFormCard: React.FC<PoetryFormProps> = ({
   title,
