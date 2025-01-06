@@ -33,19 +33,11 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      
       <html lang="en">
-        <body className={`font-family-'Roboto', font-sans bg-gray-50 dark:bg-gray-950 text-black dark:text-white flex flex-col items-center px-3 py-10 min-h-dvh`}>
+        <body className={`font-family-'Roboto', font-sans text-black dark:text-white flex flex-col items-center px-3 py-10 min-h-dvh`}>
           <div className="w-full flex justify-end mb-4">
-           
-            {/* <SignedOut>
-              <SignInButton />
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn> */}
+            {/* SignInButton/UserButton logic */}
           </div>
-          
           <Toaster richColors theme="system" />
           {children}
           <Analytics />
@@ -55,6 +47,7 @@ export default function RootLayout({
     </ClerkProvider>
   );
 }
+
 
 function A(props: any) {
   return (
