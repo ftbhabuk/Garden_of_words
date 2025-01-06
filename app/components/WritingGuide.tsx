@@ -367,22 +367,6 @@ export default function PoetryGuide() {
             <ExerciseCard key={exercise.title} {...exercise} index={index} />
           ))}
         </div>
-
-        {/* Call to Action */}
-        {/* <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mt-20"
-        >
-          <h3 className="text-2xl font-serif mb-4 text-gray-800">Begin Your Poetry Journey</h3>
-          <p className="text-gray-600 max-w-2xl mx-auto mb-8">
-            Every great poet started with a single word. Your journey begins now.
-          </p>
-          <button className="bg-emerald-600 text-white px-8 py-3 rounded-lg hover:bg-emerald-700 transition-colors duration-300">
-            Start Writing
-          </button>
-        </motion.div> */}
       </div>
     </section>
   );
