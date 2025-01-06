@@ -117,6 +117,7 @@ export default function PoetryCommunity() {
 
   return (
     <section className="py-20 min-h-screen">
+      {/*  */}
       <div className="max-w-6xl mx-auto px-4">
         <motion.div
           initial={{ opacity: 0 }}

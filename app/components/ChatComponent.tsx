@@ -38,6 +38,26 @@ export default function EnhancedChatComponent() {
             animate={{ opacity: 1, y: 0 }}
             className="w-full max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-xl border border-gray-200"
         >
+            
+            {/* Call to Action */}
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                className="text-center mt-20"
+            >
+                <h3 className="text-2xl font-serif mb-4 text-gray-800">Ignite Your Poetry with AI</h3>
+                <p className="text-gray-600 max-w-2xl mx-auto mb-8">
+                Every great poem starts with an idea. Let AI help you discover and shape your unique voice.
+                </p>
+                <button  className="bg-emerald-600 text-white px-8 py-3 rounded-lg hover:bg-emerald-700 transition-colors duration-300 mb-4 ">
+                Start Writing!
+                </button>
+
+            </motion.div>
+            <div>
+
+            </div>
             <form
                 className="relative flex flex-col space-y-4"
                 onSubmit={(e) => {
@@ -109,7 +129,7 @@ export default function EnhancedChatComponent() {
                         onChange={(e) => {
                             if (!isLoading) setText(e.target.value);
                         }}
-                        className="w-full rounded-xl bg-gray-50 border border-gray-300 px-4 pt-12 pb-4 min-h-32 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all shadow-sm hover:shadow-md resize-none"
+                        className="w-full rounded-xl bg-gray-50 border border-gray-300 px-4 pt-12 pb-4 min-h-32 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all shadow-sm hover:shadow-md resize-none text-black"
                         placeholder="Plant your poetic seeds here..."
                         aria-label="Text"
                         onKeyDown={(e) => {
@@ -123,7 +143,7 @@ export default function EnhancedChatComponent() {
 
                 <div className="flex items-center space-x-4">
                     <motion.input
-                        className="flex-1 bg-gray-50 rounded-full py-2 px-6 focus:outline-none focus:ring-2 focus:ring-emerald-500 border border-gray-300 shadow-sm hover:shadow-md"
+                        className="flex-1 bg-gray-50 rounded-full py-2 px-6 focus:outline-none focus:ring-2 focus:ring-emerald-500 border border-gray-300 shadow-sm hover:shadow-md text-black"
                         placeholder="How shall we tend to your words?"
                         onChange={handleInputChange}
                         value={input}
@@ -146,6 +166,8 @@ export default function EnhancedChatComponent() {
                     </motion.button>
                 </div>
             </form>
+
+           
         </motion.div>
     );
 }
