@@ -181,7 +181,7 @@ export default function PoetryGuide() {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h3 className="text-2xl font-serif mb-4">Writing Exercises</h3>
+          <h3 className="text-2xl font-serif mb-4 text-gray-800">Writing Exercises</h3>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Put theory into practice with these creative exercises designed to spark inspiration.
           </p>

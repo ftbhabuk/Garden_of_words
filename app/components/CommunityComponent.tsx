@@ -158,7 +158,7 @@ export default function PoetryCommunity() {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h3 className="text-2xl font-serif mb-4">Upcoming Events</h3>
+          <h3 className="text-2xl font-serif mb-4 text-gray-800">Upcoming Events</h3>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Join our upcoming workshops, readings, and gatherings to connect with fellow poets.
           </p>
