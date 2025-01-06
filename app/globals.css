@@ -4,3 +4,12 @@
 
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+
+/* Add this to your globals.css */
+body {
+    background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+    background-attachment: fixed;
+    background-size: cover;
+  }
+  
