@@ -151,98 +151,99 @@ const PoemActions = ({ onCopy, onShare }: { onCopy: () => void; onShare: () => v
 
 // PoetryAspect Component
 interface PoetryAspectProps {
-  title: string;
-  description: string;
-  index: number;
-}
-
-export const PoetryAspect: React.FC<PoetryAspectProps> = ({ title, description, index }) => {
-  const theme = aspectThemes[title as keyof typeof aspectThemes];
-  const Icon = theme?.icon || HelpCircle;
-  const [showPoem, setShowPoem] = useState(false);
-  const [showInterpretation, setShowInterpretation] = useState(false);
-  const poem = poems[title as keyof typeof poems];
+    title: string;
+    description: string;
+    index: number;
+  }
   
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowPoem(true);
-    }, 1500 + index * 300);
+  export const PoetryAspect: React.FC<PoetryAspectProps> = ({ title, description, index }) => {
+    const theme = aspectThemes[title as keyof typeof aspectThemes];
+    const Icon = theme?.icon || HelpCircle;
+    const [showPoem, setShowPoem] = useState(false);
+    const [showInterpretation, setShowInterpretation] = useState(false);
+    const poem = poems[title as keyof typeof poems];
     
-    return () => clearTimeout(timer);
-  }, [index]);
-
-  const handleCopy = () => {
-    if (poem) {
-      navigator.clipboard.writeText(poem.content);
-    }
-  };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.8 }}
-      className={`${theme.bgGradient} backdrop-blur-md p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-500 border border-white/20`}
-    >
-      <div className="flex items-start gap-6">
-        <motion.div 
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 0.5, delay: index * 0.2 }}
-          className={`p-4 ${theme.iconBg} rounded-lg shadow-inner`}
-        >
-          <Icon className={`w-7 h-7 ${theme.iconColor}`} />
-        </motion.div>
-        
-        <div className="space-y-8 w-full">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setShowPoem(true);
+      }, 1500 + index * 300);
+      
+      return () => clearTimeout(timer);
+    }, [index]);
+  
+    const handleCopy = () => {
+      if (poem) {
+        navigator.clipboard.writeText(poem.content);
+      }
+    };
+  
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.8 }}
+        className={`${theme.bgGradient} backdrop-blur-md p-4 sm:p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-500 border border-white/20 w-full max-w-full mx-auto`}
+      >
+        <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
+          <motion.div 
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
             transition={{ duration: 0.5, delay: index * 0.2 }}
+            className={`p-4 ${theme.iconBg} rounded-lg shadow-inner mx-auto sm:mx-0`}
           >
-            <h3 className="text-2xl font-medium text-gray-800 mb-4">{title}</h3>
-            <p className="text-lg text-gray-700 leading-relaxed">{description}</p>
+            <Icon className={`w-7 h-7 ${theme.iconColor}`} />
           </motion.div>
           
-          {showPoem && poem && (
+          <div className="space-y-6 sm:space-y-8 w-full">
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              className={`${theme.poemBackground} p-8 rounded-xl text-center relative group shadow-lg backdrop-blur-sm`}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.2 }}
+              className="text-center sm:text-left"
             >
-              <motion.div className={`text-base ${theme.iconColor} mb-6 italic flex items-center justify-center gap-2 font-medium`}>
-                <Feather className="w-5 h-5" />
-                {poem.style}
-              </motion.div>
-              
-              <div className="text-lg text-gray-800 leading-relaxed">
-                <TypewriterText 
-                  text={poem.content} 
-                  onComplete={() => setTimeout(() => setShowInterpretation(true), 500)}
-                />
-              </div>
-              
-              <PoemActions onCopy={handleCopy} onShare={() => alert("Sharing functionality would go here!")} />
-              
-              <AnimatePresence>
-                {showInterpretation && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.5 }}
-                    className="mt-8 pt-6 border-t border-gray-300/50 text-base text-gray-700 italic leading-relaxed"
-                  >
-                    {poem.interpretation}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              <h3 className="text-xl sm:text-2xl font-medium text-gray-800 mb-3 sm:mb-4">{title}</h3>
+              <p className="text-base sm:text-lg text-gray-700 leading-relaxed">{description}</p>
             </motion.div>
-          )}
+            
+            {showPoem && poem && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className={`${theme.poemBackground} p-4 sm:p-8 rounded-xl text-center relative group shadow-lg backdrop-blur-sm w-full`}
+              >
+                <motion.div className={`text-sm sm:text-base ${theme.iconColor} mb-4 sm:mb-6 italic flex items-center justify-center gap-2 font-medium`}>
+                  <Feather className="w-4 h-4 sm:w-5 sm:h-5" />
+                  {poem.style}
+                </motion.div>
+                
+                <div className="text-base sm:text-lg text-gray-800 leading-relaxed max-w-prose mx-auto">
+                  <TypewriterText 
+                    text={poem.content} 
+                    onComplete={() => setTimeout(() => setShowInterpretation(true), 500)}
+                  />
+                </div>
+                
+                <PoemActions onCopy={handleCopy} onShare={() => alert("Sharing functionality would go here!")} />
+                
+                <AnimatePresence>
+                  {showInterpretation && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.5 }}
+                      className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-300/50 text-sm sm:text-base text-gray-700 italic leading-relaxed"
+                    >
+                      {poem.interpretation}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            )}
+          </div>
         </div>
-      </div>
-    </motion.div>
-  );
-};
+      </motion.div>
+    );
+  };
