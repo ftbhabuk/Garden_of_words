@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState } from "react";
@@ -6,13 +5,14 @@ import { useCompletion } from "ai/react";
 import TextareaAutosize from "react-textarea-autosize";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { Sparkles, Loader, Tag, X } from "lucide-react";
+import { Sparkles, Loader, Tag, X, Sliders } from "lucide-react";
 
 export default function EnhancedChatComponent() {
     const [text, setText] = useState("");
     const [selectedTag, setSelectedTag] = useState("");
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [temperature, setTemperature] = useState(0.7);
+    const [isSliderVisible, setIsSliderVisible] = useState(false);
 
     const tags = [
         { id: "free-verse", label: "Free Verse", icon: "🌿" },
@@ -40,7 +40,6 @@ export default function EnhancedChatComponent() {
             animate={{ opacity: 1, y: 0 }}
             className="w-full max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-xl border border-gray-200"
         >
-            
             {/* Call to Action */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -50,16 +49,13 @@ export default function EnhancedChatComponent() {
             >
                 <h3 className="text-2xl font-serif mb-4 text-gray-800">Ignite Your Poetry with AI</h3>
                 <p className="text-gray-600 max-w-2xl mx-auto mb-8">
-                Every great poem starts with an idea. Let AI help you discover and shape your unique voice.
+                    Every great poem starts with an idea. Let AI help you discover and shape your unique voice.
                 </p>
-                <button  className="bg-emerald-600 text-white px-8 py-3 rounded-lg hover:bg-emerald-700 transition-colors duration-300 mb-4 ">
-                Start Writing!
+                <button className="bg-emerald-600 text-white px-8 py-3 rounded-lg hover:bg-emerald-700 transition-colors duration-300 mb-4">
+                    Start Writing!
                 </button>
-
             </motion.div>
-            <div>
 
-            </div>
             <form
                 className="relative flex flex-col space-y-4"
                 onSubmit={(e) => {
@@ -77,8 +73,8 @@ export default function EnhancedChatComponent() {
                             >
                                 <span>{tags.find(t => t.id === selectedTag)?.icon}</span>
                                 <span>{tags.find(t => t.id === selectedTag)?.label}</span>
-                                <X 
-                                    className="w-4 h-4 cursor-pointer hover:text-emerald-800" 
+                                <X
+                                    className="w-4 h-4 cursor-pointer hover:text-emerald-800"
                                     onClick={() => setSelectedTag("")}
                                 />
                             </motion.div>
@@ -168,22 +164,35 @@ export default function EnhancedChatComponent() {
                     </motion.button>
                 </div>
 
-                <div className="mt-4">
-                    <label htmlFor="temperature" className="block text-sm font-medium text-gray-700">
-                        Adjust Creativeness ({temperature})
-                    </label>
-                    <input
-                        type="range"
-                        id="temperature"
-                        name="temperature"
-                        min="0"
-                        max="1"
-                        step="0.01"
-                        value={temperature}
-                        onChange={(e) => setTemperature(parseFloat(e.target.value))}
-                        className="w-full mt-2"
-                    />
+                <div className="flex items-center justify-between mt-6">
+                    <button
+                        type="button"
+                        className="flex items-center space-x-2 bg-gray-100 px-4 py-2 rounded-full text-sm text-gray-600 hover:bg-gray-200 shadow-sm transition-all"
+                        onClick={() => setIsSliderVisible(!isSliderVisible)}
+                    >
+                        <Sliders className="w-4 h-4" />
+                        <span>Adjust Creativeness</span>
+                    </button>
                 </div>
+
+                {isSliderVisible && (
+                    <div className="mt-4">
+                        <label htmlFor="temperature" className="block text-sm font-medium text-gray-700">
+                            Adjust Creativeness ({temperature.toFixed(2)})
+                        </label>
+                        <input
+                            type="range"
+                            id="temperature"
+                            name="temperature"
+                            min="0"
+                            max="1"
+                            step="0.01"
+                            value={temperature}
+                            onChange={(e) => setTemperature(parseFloat(e.target.value))}
+                            className="w-full mt-2 rounded-lg appearance-none bg-gray-200 accent-emerald-600 h-2"
+                        />
+                    </div>
+                )}
             </form>
         </motion.div>
     );
