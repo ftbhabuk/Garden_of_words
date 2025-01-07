@@ -4,3 +4,6 @@
 
 website title "Garden of Words"
 all about writing literature style 
+
+clicking outside thearea after opening adj creative close it on click handler 
+make the scroll more elegent

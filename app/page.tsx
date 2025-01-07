@@ -5,7 +5,7 @@ import { MaxWidthWrapper } from "./components/max-width-wrapper";
 import WhatIsPoetry from "./components/WhatIsPoetry";
 import PoetryGuide from "./components/WritingGuide";
 import PoetryOrigins from "./components/PoetryOrigins";
-import PoetryCommunity from "./components/CommunityComponent";
+import Footer from "./components/Footer";
 import HeroSection from "./components/HeroSection";
 
 export default function Home() {
@@ -17,7 +17,7 @@ export default function Home() {
             <PoetryOrigins/>
             <PoetryGuide/>
             <ChatComponent />
-            <PoetryCommunity/>
+            <Footer/>
 
            
         </div>
