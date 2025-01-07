@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState } from "react";
@@ -11,6 +12,7 @@ export default function EnhancedChatComponent() {
     const [text, setText] = useState("");
     const [selectedTag, setSelectedTag] = useState("");
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [temperature, setTemperature] = useState(0.7);
 
     const tags = [
         { id: "free-verse", label: "Free Verse", icon: "🌿" },
@@ -27,7 +29,7 @@ export default function EnhancedChatComponent() {
         handleSubmit,
         setInput,
     } = useCompletion({
-        body: { text, tag: selectedTag },
+        body: { text, tag: selectedTag, temperature },
         onFinish: (prompt, completion) => setText(completion.trim()),
         onError: (error) => toast.error(error.message),
     });
@@ -165,9 +167,24 @@ export default function EnhancedChatComponent() {
                         )}
                     </motion.button>
                 </div>
-            </form>
 
-           
+                <div className="mt-4">
+                    <label htmlFor="temperature" className="block text-sm font-medium text-gray-700">
+                        Adjust Creativeness ({temperature})
+                    </label>
+                    <input
+                        type="range"
+                        id="temperature"
+                        name="temperature"
+                        min="0"
+                        max="1"
+                        step="0.01"
+                        value={temperature}
+                        onChange={(e) => setTemperature(parseFloat(e.target.value))}
+                        className="w-full mt-2"
+                    />
+                </div>
+            </form>
         </motion.div>
     );
 }
