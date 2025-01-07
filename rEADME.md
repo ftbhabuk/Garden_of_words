@@ -1,9 +1,18 @@
-1. maybe garden your word box align a bit
-2. add a small icon for copying content directly to clipboard after the prompt answers back
+
+priorities top to bottom 
 
 
-website title "Garden of Words"
-all about writing literature style 
+#redesign navbar : add shortcuts for going to different sections of the page .
 
-clicking outside thearea after opening adj creative close it on click handler 
-make the scroll more elegent
+#remove that bd gradient color from the whole applied component lol 
+
+#add new theme tags poem novel type of poems n stuffs maybe give potions to choose what to write first 
+like tags # poems #novels # story and on clicking one it expands and shows its varients 
+
+#accordingly on tags modify the backend
+
+#need to adjust the prompt for more robustness for "garden of words" api tell it it is integrated in "GOfW"
+
+
+#brainstorm what to do with clerk authentication n  usage of it lol maybe limit for free users? 
+
