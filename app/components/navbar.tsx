@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { MaxWidthWrapper } from "./max-width-wrapper";
 import { SignInButton, SignOutButton, useAuth, useClerk } from "@clerk/nextjs";
-import { Button, buttonVariants } from "./ui/button";
+import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { BookOpen,Trees } from "lucide-react";
 
 export const Navbar = () => {
   const { isSignedIn, isLoaded } = useAuth();
@@ -13,12 +14,10 @@ export const Navbar = () => {
   const { signOut } = useClerk();
   const router = useRouter();
 
-  // Prevent hydration errors
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Don't render anything until the component is mounted and auth is loaded
   if (!mounted || !isLoaded) {
     return null;
   }
@@ -26,44 +25,56 @@ export const Navbar = () => {
   const handleSignOut = async () => {
     try {
       await signOut();
-      router.push("/"); // Redirect to home page after sign out
-      router.refresh(); // Refresh the page to update the auth state
+      router.push("/");
+      router.refresh();
     } catch (error) {
       console.error("Error signing out:", error);
     }
   };
 
   return (
-    <nav className="sticky z-[100] h-16 inset-x-0 top-0 w-full border-b border-gray-200 bg-gradient-to-r from-[#fdfbfb] to-[#ebedee] backdrop-blur-lg transition-all">
-      <MaxWidthWrapper>
-        <div className="flex h-16 items-center justify-between text-gray-800">
-          <Link href="/" className="flex z-40 font-semibold">
-          Garden <span>of</span> <span className="text-emerald-600">Words</span>
-          </Link>
+    <div className="fixed w-full top-0 z-50">
+      <nav className="h-16 border-b border-gray-200 bg-white/80 backdrop-blur-lg shadow-sm">
+        <MaxWidthWrapper>
+          <div className="flex h-16 items-center justify-between">
+            <Link 
+              href="/" 
+              className="flex items-center space-x-2 hover:opacity-90 transition-opacity"
+            >
+              {/* we'll add presonalized pic/ icon there  */}
+              <Trees className="h-6 w-6 text-emerald-600" />
+              <span className="text-xl font-bold">
+                Garden 
+                <span className="text-gray-500 mx-1">of</span>
+                <span className="text-emerald-600">Words</span>
+              </span>
+            </Link>
 
-          <div className="h-full flex items-center space-x-4 ml-auto">
-            {isSignedIn ? (
-              <>
-                <Button 
-                  size="sm" 
-                  variant="ghost"
+            <div className="flex items-center space-x-4">
+              {isSignedIn ? (
+                <Button
                   onClick={handleSignOut}
+                  variant="ghost"
+                  className="font-medium hover:bg-emerald-50 hover:text-emerald-600 transition-colors"
                 >
                   Sign out
                 </Button>
-              </>
-            ) : (
-              <>
+              ) : (
                 <SignInButton mode="modal">
-                  <Button size="sm" variant="ghost">
+                  <Button 
+                    variant="ghost"
+                    className="font-medium hover:bg-emerald-50 hover:text-emerald-600 transition-colors"
+                  >
                     Sign in
                   </Button>
                 </SignInButton>
-              </>
-            )}
+              )}
+            </div>
           </div>
-        </div>
-      </MaxWidthWrapper>
-    </nav>
+        </MaxWidthWrapper>
+      </nav>
+    </div>
   );
 };
+
+export default Navbar;

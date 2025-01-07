@@ -3,15 +3,8 @@ import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Toaster } from "sonner";
-import { WandIcon } from "@/app/icons";
-import {
-  ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton
-} from '@clerk/nextjs';
-import { Navbar } from "./components/navbar";
+import { ClerkProvider } from '@clerk/nextjs';
+import { Navbar } from "./components/navbar"; // Importing Navbar
 
 export const metadata: Metadata = {
   title: "Magic Spell",
@@ -34,7 +27,8 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`font-family-'Roboto', font-sans text-black dark:text-white flex flex-col items-center px-3 py-10 min-h-dvh`}>
+        <body className={`pt-16 font-family-'Roboto', font-sans flex flex-col items-center px-3 min-h-dvh`}>
+          <Navbar /> {/* Adding Navbar here */}
           <div className="w-full flex justify-end mb-4">
             {/* SignInButton/UserButton logic */}
           </div>
@@ -47,7 +41,6 @@ export default function RootLayout({
     </ClerkProvider>
   );
 }
-
 
 function A(props: any) {
   return (
