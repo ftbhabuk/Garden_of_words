@@ -4,7 +4,11 @@ const nextConfig = {
     images: {
       unoptimized: true,
     },
-    basePath: '/Garden_of_words', // This should match your repo name
+    basePath: '/Garden_of_words', // Your repo name
+    // Disable server actions for static export
+    experimental: {
+      serverActions: false,
+    }
   }
   
   export default nextConfig
