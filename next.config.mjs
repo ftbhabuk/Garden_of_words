@@ -1,7 +1,9 @@
-module.exports = {
-    experimental: {
-      serverActions: false, // Disable server actions
-    },
-    output: 'export', // Only if static export is required
-  };
-  
+// next.config.mjs
+
+const nextConfig = {
+  reactStrictMode: true,
+  swcMinify: true,
+  // Add other configurations here
+};
+
+export default nextConfig;

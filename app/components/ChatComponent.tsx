@@ -1,10 +1,24 @@
 "use client";
+
 import React, { useState, useRef, useEffect } from "react";
 import { useCompletion } from "ai/react";
 import TextareaAutosize from "react-textarea-autosize";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Loader, Tag, X, Sliders } from "lucide-react";
+
+// Move styles to a separate CSS module or use a styled-components approach
+const sliderClass = {
+  wrapper: "relative h-2 bg-gray-200 rounded-full",
+  slider: `absolute w-full h-full appearance-none bg-transparent cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-emerald-500 [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-emerald-500 [&::-moz-range-thumb]:border-0`,
+  progress: (value: number) => ({
+    position: 'absolute' as 'absolute', // Ensure this matches the 
+    height: '100%',
+    background: '#10B981',
+    width: `${value * 100}%`,
+    borderRadius: '9999px',
+  })
+};
 
 export default function EnhancedChatComponent() {
   const [text, setText] = useState("");
@@ -45,35 +59,12 @@ export default function EnhancedChatComponent() {
     };
   }, []);
 
-  // CSS for the dotted slider track
-  const sliderStyles = `
-    .dotted-slider {
-      background: linear-gradient(to right, #10B981 0%, #10B981 ${temperature * 100}%, #E5E7EB ${temperature * 100}%, #E5E7EB 100%);
-      background-size: 100%;
-      height: 2px;
-      position: relative;
-    }
-    .dotted-slider::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background-image: linear-gradient(to right, #fff 50%, transparent 50%);
-      background-size: 10px 1px;
-      opacity: 0.5;
-    }
-  `;
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="w-full max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-xl border border-gray-200"
     >
-      <style>{sliderStyles}</style>
-
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -200,7 +191,6 @@ export default function EnhancedChatComponent() {
           </motion.button>
         </div>
 
-        {/* Animated Creativity Control with Dotted Slider */}
         <div className="relative h-12" ref={sliderRef}>
           <AnimatePresence mode="wait">
             {!isSliderVisible ? (
@@ -229,16 +219,18 @@ export default function EnhancedChatComponent() {
                     <span>Creativity: {(temperature * 100).toFixed(0)}%</span>
                   </div>
                   <div className="flex-1 relative">
-                    <div className="dotted-slider rounded-full"></div>
-                    <input
-                      type="range"
-                      min="0"
-                      max="1"
-                      step="0.01"
-                      value={temperature}
-                      onChange={(e) => setTemperature(parseFloat(e.target.value))}
-                      className="absolute top-0 w-full h-full opacity-0 cursor-pointer"
-                    />
+                    <div className={sliderClass.wrapper}>
+                      <div style={sliderClass.progress(temperature)} />
+                      <input
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.01"
+                        value={temperature}
+                        onChange={(e) => setTemperature(parseFloat(e.target.value))}
+                        className={sliderClass.slider}
+                      />
+                    </div>
                   </div>
                 </div>
               </motion.div>
