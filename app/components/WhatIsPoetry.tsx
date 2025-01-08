@@ -2,7 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { HelpCircle } from "lucide-react";
-import { PoetryAspect } from "./PoetryComponents";
+import { PoetryAspect } from "./PoetryAspects";
 
 const poetryAspects = [
   {

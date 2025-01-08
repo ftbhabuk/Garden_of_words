@@ -1,14 +1,19 @@
-/** @type {import('next').NextConfig} */
+// next.config.mjs
 const nextConfig = {
-    output: 'export',
-    images: {
-      unoptimized: true,
-    },
-    basePath: '/Garden_of_words', // Your repo name
-    // Disable server actions for static export
-    experimental: {
-      serverActions: false,
-    }
+  reactStrictMode: true,
+  swcMinify: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**', // You might want to restrict this to specific domains
+      },
+    ],
+  },
+  // Remove any serverActions configuration since it's stable in Next.js 14
+  experimental: {
+    // Only add experimental features if absolutely needed
   }
-  
-  export default nextConfig
+};
+
+export default nextConfig;
