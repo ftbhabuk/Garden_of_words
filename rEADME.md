@@ -16,3 +16,5 @@ like tags # poems #novels # story and on clicking one it expands and shows its v
 
 #brainstorm what to do with clerk authentication n  usage of it lol maybe limit for free users? 
 
+
+#lets give it a dtry to deploy in github pages 
