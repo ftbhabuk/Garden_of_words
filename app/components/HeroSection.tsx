@@ -80,11 +80,9 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="mt-12 space-x-4"
         >
-          <button className="px-8 py-3 bg-emerald-600 text-white rounded-lg shadow-lg hover:bg-emerald-700 transition-colors duration-300">
-            Start Writing
-          </button>
+          
           <button className="px-8 py-3 bg-white/80 backdrop-blur-sm text-gray-800 rounded-lg shadow-lg hover:bg-white/90 transition-colors duration-300">
-            Explore Poetry
+          Start Writing
           </button>
         </motion.div>
       </div>
