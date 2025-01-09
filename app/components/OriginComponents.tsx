@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Feather, ChevronDown, Sparkles, LucideIcon } from "lucide-react";
@@ -92,37 +92,38 @@ const HistoricalEra = ({
       whileInView={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.8, delay: index * 0.2 }}
       viewport={{ once: true }}
-      className={`group relative overflow-hidden bg-gradient-to-br ${color} backdrop-blur-sm p-6 rounded-xl border border-gray-100 shadow-lg hover:shadow-xl transition-all duration-500`}
+      className={`group relative overflow-hidden bg-gradient-to-br ${color} backdrop-blur-sm p-4 md:p-6 rounded-xl border border-gray-100 shadow-lg hover:shadow-xl transition-all duration-500`}
     >
       <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
       
-      <div className="relative flex items-start gap-4 md:gap-4">
-        <div className={`p-3 rounded-lg shrink-0 shadow-md transition-all duration-300 group-hover:shadow-lg ${iconBg} backdrop-blur-sm`}>
-          <Icon className={`w-6 h-6 ${iconColor}`} />
+      <div className="relative flex gap-4">
+        <div className={`p-2.5 md:p-3 rounded-lg shrink-0 shadow-md transition-all duration-300 group-hover:shadow-lg ${iconBg} backdrop-blur-sm self-start`}>
+          <Icon className={`w-5 h-5 md:w-6 md:h-6 ${iconColor}`} />
         </div>
-        <div className="md:ml-0 -ml-2">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-sm text-gray-600 mb-1 font-medium tracking-wide"
-          >
-            {date}
-          </motion.div>
-          <motion.h3
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="text-xl font-medium text-gray-800 mb-2"
-          >
-            {era}
-          </motion.h3>
+        <div className="flex-1 space-y-3">
+          <div className="flex flex-col space-y-1">
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="text-sm text-gray-600 font-medium tracking-wide"
+            >
+              {date}
+            </motion.div>
+            <motion.h3
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="text-lg md:text-xl font-medium text-gray-800"
+            >
+              {era}
+            </motion.h3>
+          </div>
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="text-gray-700 leading-relaxed text-base lg:text-lg"
-          >
+            className="-ml-10 text-base md:text-lg text-gray-700 leading-relaxed">
             {description}
           </motion.p>
           
@@ -131,7 +132,7 @@ const HistoricalEra = ({
             whileInView={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
             onClick={() => setIsExpanded(!isExpanded)}
-            className="mt-4 text-sm flex items-center gap-2 group/btn text-emerald-600 hover:text-emerald-700 transition-colors"
+            className="ml-10 text-sm flex items-center gap-2 group/btn text-emerald-600 hover:text-emerald-700 transition-colors"
           >
             <Sparkles className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
             {isExpanded ? "Hide Examples" : "View Examples"}
