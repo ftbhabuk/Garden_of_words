@@ -10,16 +10,21 @@ import HeroSection from "./components/HeroSection";
 
 export default function Home() {
     return (
-        <div className="min-h-screen ">
-
-            <HeroSection />
-            <WhatIsPoetry />
-            <PoetryOrigins/>
-            <PoetryGuide/>
-            <ChatComponent />
-            <Footer/>
-
-           
+      <div className="min-h-screen">
+        <HeroSection />
+        <div id="explore">
+          <WhatIsPoetry />
         </div>
+        <div id="journey">
+          <PoetryOrigins />
+        </div>
+        <div id="craft">
+          <PoetryGuide />
+        </div>
+        <div id="chat">
+          <ChatComponent />
+        </div>
+        <Footer />
+      </div>
     );
-}
+  }
