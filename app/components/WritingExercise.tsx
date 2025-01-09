@@ -7,6 +7,39 @@ import {
   Save, RotateCcw, LucideIcon 
 } from "lucide-react";
 
+const exerciseThemes = {
+  sensory: {
+    gradient: "from-purple-50/50 to-pink-50/50",
+    accent: "bg-gradient-to-br from-purple-200/30 via-pink-100/30 to-purple-200/30",
+    iconColor: "text-purple-600",
+    iconBg: "bg-purple-50"
+  },
+  object: {
+    gradient: "from-blue-50/50 to-cyan-50/50",
+    accent: "bg-gradient-to-br from-blue-200/30 via-cyan-100/30 to-blue-200/30",
+    iconColor: "text-blue-600",
+    iconBg: "bg-blue-50"
+  },
+  memory: {
+    gradient: "from-amber-50/50 to-yellow-50/50",
+    accent: "bg-gradient-to-br from-amber-200/30 via-yellow-100/30 to-amber-200/30",
+    iconColor: "text-amber-600",
+    iconBg: "bg-amber-50"
+  },
+  persona: {
+    gradient: "from-rose-50/50 to-pink-50/50",
+    accent: "bg-gradient-to-br from-rose-200/30 via-pink-100/30 to-rose-200/30",
+    iconColor: "text-rose-600",
+    iconBg: "bg-rose-50"
+  },
+  wordchain: {
+    gradient: "from-emerald-50/50 to-green-50/50",
+    accent: "bg-gradient-to-br from-emerald-200/30 via-green-100/30 to-emerald-200/30",
+    iconColor: "text-emerald-600",
+    iconBg: "bg-emerald-50"
+  }
+};
+
 type ExerciseProps = {
   title: string;
   prompt: string;
@@ -14,6 +47,7 @@ type ExerciseProps = {
   difficulty: string;
   timeEstimate: string;
   icon: LucideIcon;
+  theme?: keyof typeof exerciseThemes;
   index: number;
 };
 
@@ -24,12 +58,14 @@ const ExerciseCard: React.FC<ExerciseProps> = ({
   difficulty, 
   timeEstimate,
   icon: Icon, 
+  theme = "sensory",
   index 
 }) => {
   const [text, setText] = useState(example || '');
   const [savedText, setSavedText] = useState(example || '');
   const [isSaved, setIsSaved] = useState(true);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const styles = exerciseThemes[theme];
 
   useEffect(() => {
     const textarea = textareaRef.current;
@@ -68,19 +104,21 @@ const ExerciseCard: React.FC<ExerciseProps> = ({
       whileInView={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.6, delay: index * 0.2 }}
       viewport={{ once: true }}
-      className="bg-white/60 backdrop-blur-sm p-6 rounded-xl shadow-md"
+      className={`bg-gradient-to-br ${styles.gradient} backdrop-blur-sm p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300`}
     >
       <div className="flex justify-between items-start mb-4">
-        <Icon className="w-6 h-6 text-emerald-600" />
+        <div className={`p-3 ${styles.iconBg} rounded-lg shrink-0`}>
+          <Icon className={`w-6 h-6 ${styles.iconColor}`} />
+        </div>
         <div className="flex items-center gap-2">
-          <span className={`text-sm px-2 py-1 rounded ${
+          <span className={`text-sm px-2 py-1 rounded-full font-medium ${
             difficulty === "Beginner" ? "bg-green-100 text-green-700" :
-            difficulty === "Intermediate" ? "bg-yellow-100 text-yellow-700" :
-            "bg-red-100 text-red-700"
+            difficulty === "Intermediate" ? "bg-amber-100 text-amber-700" :
+            "bg-rose-100 text-rose-700"
           }`}>
             {difficulty}
           </span>
-          <span className="text-sm text-gray-500 flex items-center gap-1">
+          <span className="text-sm text-gray-500 flex items-center gap-1 bg-white/50 px-2 py-1 rounded-full">
             <Clock className="w-4 h-4" />
             {timeEstimate}
           </span>
@@ -89,30 +127,30 @@ const ExerciseCard: React.FC<ExerciseProps> = ({
       <h4 className="text-lg font-medium text-gray-800 mb-2">{title}</h4>
       <p className="text-gray-600 mb-4">{prompt}</p>
       {example && (
-        <div className="bg-gray-50 p-4 rounded-lg group relative">
+        <div className={`${styles.accent} p-4 rounded-lg group relative`}>
           <textarea
             ref={textareaRef}
             value={text}
             onChange={(e) => setText(e.target.value)}
-            className="w-full bg-transparent text-gray-700 italic font-serif resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500 rounded p-2 transition-all duration-200"
+            className="w-full bg-transparent text-gray-700 italic font-serif resize-none focus:outline-none focus:ring-2 focus:ring-opacity-50 rounded p-2 transition-all duration-200"
             placeholder="Start writing your poem here..."
             rows={1}
           />
-          <div className="absolute right-2 bottom-2 flex gap-2">
+          <div className="absolute right-2 bottom-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
             <button
               onClick={handleReset}
-              className="p-1.5 rounded-full hover:bg-gray-200 transition-colors"
+              className="p-1.5 rounded-full hover:bg-white/50 transition-colors"
               title="Reset to original"
             >
-              <RotateCcw className="w-4 h-4 text-gray-500" />
+              <RotateCcw className={`w-4 h-4 ${styles.iconColor}`} />
             </button>
             <button
               onClick={handleSave}
               disabled={isSaved}
               className={`p-1.5 rounded-full transition-colors ${
                 isSaved 
-                  ? 'text-emerald-500 hover:bg-emerald-50' 
-                  : 'text-gray-500 hover:bg-gray-200'
+                  ? `${styles.iconColor} hover:bg-white/50` 
+                  : 'text-gray-500 hover:bg-white/50'
               }`}
               title="Save changes"
             >
@@ -130,7 +168,7 @@ const ExerciseCard: React.FC<ExerciseProps> = ({
         }
         @keyframes flash {
           0% { background-color: transparent; }
-          50% { background-color: rgba(16, 185, 129, 0.1); }
+          50% { background-color: rgba(255, 255, 255, 0.3); }
           100% { background-color: transparent; }
         }
       `}</style>
@@ -145,7 +183,8 @@ export const exercises = [
     example: "Crunch of autumn leaves\nBitter coffee on my tongue\nWind whispers secrets",
     difficulty: "Beginner",
     timeEstimate: "30 mins",
-    icon: Sparkles
+    icon: Sparkles,
+    theme: "sensory"
   },
   {
     title: "Object Study",
@@ -153,7 +192,8 @@ export const exercises = [
     example: "The old kettle sings\nits steam-breath rising like prayers\nto kitchen ceiling",
     difficulty: "Beginner",
     timeEstimate: "45 mins",
-    icon: Feather
+    icon: Feather,
+    theme: "object"
   },
   {
     title: "Memory Poem",
@@ -161,7 +201,8 @@ export const exercises = [
     example: "Grandmother's kitchen:\ncinnamon clouds, rolling pins,\nflour-dusted love",
     difficulty: "Intermediate",
     timeEstimate: "1 hour",
-    icon: BookOpen
+    icon: BookOpen,
+    theme: "memory"
   },
   {
     title: "Persona Poem",
@@ -169,7 +210,8 @@ export const exercises = [
     example: "I am the moon, watching\nover lovers' whispered dreams\nand thieves' secret paths",
     difficulty: "Advanced",
     timeEstimate: "1.5 hours",
-    icon: Users
+    icon: Users,
+    theme: "persona"
   },
   {
     title: "Word Chain",
@@ -177,7 +219,8 @@ export const exercises = [
     example: "Light\nflight\nnight\nfright\nsight",
     difficulty: "Beginner",
     timeEstimate: "30 mins",
-    icon: Lightbulb
+    icon: Lightbulb,
+    theme: "wordchain"
   }
 ];
 
