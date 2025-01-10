@@ -81,9 +81,18 @@ const HeroSection = () => {
           className="mt-12 space-x-4"
         >
           
-          <button className="px-8 py-3 bg-white/80 backdrop-blur-sm text-gray-800 rounded-lg shadow-lg hover:bg-white/90 transition-colors duration-300">
-          Start Writing
-          </button>
+          <button
+  className="px-8 py-3 bg-white/80 backdrop-blur-sm text-gray-800 rounded-lg shadow-lg hover:bg-white/90 transition-colors duration-300"
+  onClick={() => {
+    const chatSection = document.getElementById("chat");
+    if (chatSection) {
+      chatSection.scrollIntoView({ behavior: "smooth" });
+    }
+  }}
+>
+  Start Writing
+</button>
+ 
         </motion.div>
       </div>
 
