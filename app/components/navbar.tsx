@@ -150,7 +150,7 @@ import {
     Navigate through the menu options.
   </DialogDescription>
   <div className="flex flex-col space-y-2 mt-8">
-    <NavLinks
+    <NavLinks   
       onItemClick={() => {
         const closeButton = document.querySelector(
           '[data-state="open"]'
