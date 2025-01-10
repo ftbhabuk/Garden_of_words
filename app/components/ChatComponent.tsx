@@ -7,12 +7,48 @@ import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Loader, Tag, X, Sliders } from "lucide-react";
 
-// Move styles to a separate CSS module or use a styled-components approach
+// Poetry types
+type PoetryForm = "Free Verse" | "Haiku" | "Sonnet" | "Limerick" | "Tanka" | "Villanelle" | "Prose Poetry";
+type PoetryStyle = "Romantic" | "Contemporary" | "Nature" | "Philosophical" | "Emotional";
+type PoetryTone = "Lyrical" | "Dramatic" | "Contemplative" | "Whimsical" | "Melancholic";
+
+interface Tag {
+  id: string;
+  label: string;
+  icon: string;
+  category: "form" | "style" | "tone";
+}
+
+const poetryTags: Tag[] = [
+  // Forms
+  { id: "free-verse", label: "Free Verse", icon: "🌿", category: "form" },
+  { id: "haiku", label: "Haiku", icon: "🍃", category: "form" },
+  { id: "sonnet", label: "Sonnet", icon: "📜", category: "form" },
+  { id: "limerick", label: "Limerick", icon: "🎭", category: "form" },
+  { id: "tanka", label: "Tanka", icon: "🌸", category: "form" },
+  { id: "villanelle", label: "Villanelle", icon: "📖", category: "form" },
+  { id: "prose-poetry", label: "Prose Poetry", icon: "✍️", category: "form" },
+  
+  // Styles
+  { id: "romantic", label: "Romantic", icon: "❤️", category: "style" },
+  { id: "contemporary", label: "Contemporary", icon: "🌆", category: "style" },
+  { id: "nature", label: "Nature", icon: "🌳", category: "style" },
+  { id: "philosophical", label: "Philosophical", icon: "🤔", category: "style" },
+  { id: "emotional", label: "Emotional", icon: "💫", category: "style" },
+  
+  // Tones
+  { id: "lyrical", label: "Lyrical", icon: "🎵", category: "tone" },
+  { id: "dramatic", label: "Dramatic", icon: "🎭", category: "tone" },
+  { id: "contemplative", label: "Contemplative", icon: "🌙", category: "tone" },
+  { id: "whimsical", label: "Whimsical", icon: "✨", category: "tone" },
+  { id: "melancholic", label: "Melancholic", icon: "🌧️", category: "tone" },
+];
+
 const sliderClass = {
   wrapper: "relative h-2 bg-gray-200 rounded-full",
   slider: `absolute w-full h-full appearance-none bg-transparent cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-emerald-500 [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-emerald-500 [&::-moz-range-thumb]:border-0`,
   progress: (value: number) => ({
-    position: 'absolute' as 'absolute', // Ensure this matches the 
+    position: 'absolute' as 'absolute',
     height: '100%',
     background: '#10B981',
     width: `${value * 100}%`,
@@ -20,25 +56,22 @@ const sliderClass = {
   })
 };
 
-export default function EnhancedChatComponent() {
+export default function EnhancedPoetryChat() {
   const [text, setText] = useState("");
-  const [selectedTag, setSelectedTag] = useState("");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [activeCategoryDropdown, setActiveCategoryDropdown] = useState<"form" | "style" | "tone" | null>(null);
   const [temperature, setTemperature] = useState(0.7);
   const [isSliderVisible, setIsSliderVisible] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
 
-  const tags = [
-    { id: "free-verse", label: "Free Verse", icon: "🌿" },
-    { id: "formal", label: "Formal", icon: "📜" },
-    { id: "poetic", label: "Poetic", icon: "🎭" },
-    { id: "short", label: "Short", icon: "✨" },
-  ];
-
   const { completion, input, isLoading, handleInputChange, handleSubmit, setInput } = useCompletion({
-    body: { text, tag: selectedTag, temperature },
+    body: { 
+      text, 
+      tags: selectedTags,
+      temperature 
+    },
     onFinish: (prompt, completion) => setText(completion.trim()),
     onError: (error) => toast.error(error.message),
   });
@@ -46,7 +79,7 @@ export default function EnhancedChatComponent() {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsDropdownOpen(false);
+        setActiveCategoryDropdown(null);
       }
       if (sliderRef.current && !sliderRef.current.contains(event.target as Node)) {
         setIsSliderVisible(false);
@@ -54,10 +87,26 @@ export default function EnhancedChatComponent() {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const handleTagSelect = (tagId: string) => {
+    const tag = poetryTags.find(t => t.id === tagId);
+    if (!tag) return;
+
+    // Remove any existing tag from the same category
+    const updatedTags = selectedTags.filter(id => {
+      const existingTag = poetryTags.find(t => t.id === id);
+      return existingTag?.category !== tag.category;
+    });
+
+    setSelectedTags([...updatedTags, tagId]);
+    setActiveCategoryDropdown(null);
+  };
+
+  const removeTag = (tagId: string) => {
+    setSelectedTags(selectedTags.filter(id => id !== tagId));
+  };
 
   return (
     <motion.div
@@ -75,9 +124,6 @@ export default function EnhancedChatComponent() {
         <p className="text-gray-600 max-w-2xl mx-auto mb-8">
           Every great poem starts with an idea. Let AI help you discover and shape your unique voice.
         </p>
-        <button className="bg-emerald-600 text-white px-8 py-3 rounded-lg hover:bg-emerald-700 transition-colors duration-300 mb-4">
-          Start Writing!
-        </button>
       </motion.div>
 
       <form
@@ -89,63 +135,75 @@ export default function EnhancedChatComponent() {
         }}
       >
         <div className="relative">
-          <div className="absolute left-4 -top-3 flex items-center space-x-2">
-            {selectedTag ? (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="flex items-center space-x-1 bg-emerald-100 px-3 py-1 rounded-full text-sm text-emerald-600 shadow-sm"
-              >
-                <span>{tags.find((t) => t.id === selectedTag)?.icon}</span>
-                <span>{tags.find((t) => t.id === selectedTag)?.label}</span>
-                <X
-                  className="w-4 h-4 cursor-pointer hover:text-emerald-800"
-                  onClick={() => setSelectedTag("")}
-                />
-              </motion.div>
+          <div className="absolute left-4 -top-3 flex items-center space-x-2 flex-wrap gap-2">
+            {selectedTags.length > 0 ? (
+              selectedTags.map(tagId => {
+                const tag = poetryTags.find(t => t.id === tagId);
+                if (!tag) return null;
+                
+                return (
+                  <motion.div
+                    key={tag.id}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="flex items-center space-x-1 bg-emerald-100 px-3 py-1 rounded-full text-sm text-emerald-600 shadow-sm"
+                  >
+                    <span>{tag.icon}</span>
+                    <span>{tag.label}</span>
+                    <X
+                      className="w-4 h-4 cursor-pointer hover:text-emerald-800"
+                      onClick={() => removeTag(tag.id)}
+                    />
+                  </motion.div>
+                );
+              })
             ) : (
-              <motion.button
-                type="button"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center space-x-1 bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-600 hover:bg-gray-200 transition-colors shadow-sm"
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              >
-                <Tag className="w-4 h-4" />
-                <span>Select Style</span>
-              </motion.button>
+              <div className="flex space-x-2">
+                {(['form', 'style', 'tone'] as const).map((category) => (
+                  <motion.button
+                    key={category}
+                    type="button"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center space-x-1 bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-600 hover:bg-gray-200 transition-colors shadow-sm"
+                    onClick={() => setActiveCategoryDropdown(category)}
+                  >
+                    <Tag className="w-4 h-4" />
+                    <span>Select {category}</span>
+                  </motion.button>
+                ))}
+              </div>
             )}
           </div>
 
           <AnimatePresence>
-            {isDropdownOpen && (
+            {activeCategoryDropdown && (
               <motion.div
                 ref={dropdownRef}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="absolute left-0 top-8 bg-white rounded-lg shadow-xl p-2 z-10 grid grid-cols-1 gap-2 min-w-[160px] border border-gray-200"
+                className="absolute left-0 top-8 bg-white rounded-lg shadow-xl p-2 z-10 grid grid-cols-2 gap-2 min-w-[200px] border border-gray-200"
               >
-                {tags.map((tag) => (
-                  <motion.button
-                    key={tag.id}
-                    type="button"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm transition-colors ${
-                      selectedTag === tag.id
-                        ? "bg-emerald-100 text-emerald-600"
-                        : "hover:bg-gray-100 text-gray-600"
-                    }`}
-                    onClick={() => {
-                      setSelectedTag(tag.id);
-                      setIsDropdownOpen(false);
-                    }}
-                  >
-                    <span>{tag.icon}</span>
-                    <span>{tag.label}</span>
-                  </motion.button>
-                ))}
+                {poetryTags
+                  .filter(tag => tag.category === activeCategoryDropdown)
+                  .map(tag => (
+                    <motion.button
+                      key={tag.id}
+                      type="button"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+                        selectedTags.includes(tag.id)
+                          ? "bg-emerald-100 text-emerald-600"
+                          : "hover:bg-gray-100 text-gray-600"
+                      }`}
+                      onClick={() => handleTagSelect(tag.id)}
+                    >
+                      <span>{tag.icon}</span>
+                      <span>{tag.label}</span>
+                    </motion.button>
+                  ))}
               </motion.div>
             )}
           </AnimatePresence>
@@ -155,7 +213,7 @@ export default function EnhancedChatComponent() {
             onChange={(e) => {
               if (!isLoading) setText(e.target.value);
             }}
-            className="w-full rounded-xl bg-gray-50 border border-gray-300 px-4 pt-12 pb-4 min-h-[128px] focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all shadow-sm hover:shadow-md resize-none text-black"
+            className="w-full rounded-xl bg-gray-50 border border-gray-300 px-4 pt-16 pb-4 min-h-[128px] focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all shadow-sm hover:shadow-md resize-none text-black"
             placeholder="Plant your poetic seeds here..."
             aria-label="Text"
             onKeyDown={(e) => {
@@ -166,6 +224,7 @@ export default function EnhancedChatComponent() {
             }}
           />
         </div>
+
 
         <div className="flex items-center space-x-4">
           <motion.input
