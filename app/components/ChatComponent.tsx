@@ -5,8 +5,13 @@ import { useCompletion } from "ai/react";
 import TextareaAutosize from "react-textarea-autosize";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Loader, Tag, X, Sliders } from "lucide-react";
-import { POETRY_TAGS } from "../Services/promptService";
+import { Sparkles, Loader, Tag as TagIcon, X, Sliders } from "lucide-react";
+import { POETRY_TAGS, Tag } from "../Services/promptService";
+
+interface SelectedTag {
+  id: string;
+  category: 'form' | 'style' | 'tone';
+}
 
 const sliderClass = {
   wrapper: "relative h-2 bg-gray-200 rounded-full",
@@ -22,7 +27,7 @@ const sliderClass = {
 
 export default function EnhancedPoetryChat() {
   const [text, setText] = useState("");
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<SelectedTag[]>([]);
   const [activeCategoryDropdown, setActiveCategoryDropdown] = useState<"form" | "style" | "tone" | null>(null);
   const [temperature, setTemperature] = useState(0.7);
   const [isSliderVisible, setIsSliderVisible] = useState(false);
@@ -33,7 +38,7 @@ export default function EnhancedPoetryChat() {
   const { completion, input, isLoading, handleInputChange, handleSubmit, setInput } = useCompletion({
     body: { 
       text, 
-      tags: selectedTags,
+      tags: selectedTags.map(tag => tag.id),
       temperature 
     },
     onFinish: (prompt, completion) => setText(completion.trim()),
@@ -57,19 +62,38 @@ export default function EnhancedPoetryChat() {
   const handleTagSelect = (tagId: string) => {
     const tag = POETRY_TAGS.find(t => t.id === tagId);
     if (!tag) return;
-
+  
     // Remove any existing tag from the same category
-    const updatedTags = selectedTags.filter(id => {
-      const existingTag = POETRY_TAGS.find(t => t.id === id);
-      return existingTag?.category !== tag.category;
-    });
+    const updatedTags = selectedTags.filter(existingTag => 
+      existingTag.category !== tag.category
+    );
+  
+    // Add the new tag with both id and category
+    setSelectedTags([...updatedTags, { id: tag.id, category: tag.category }]);
+    
+    const allCategories = ['form', 'style', 'tone'] as const;
+    const selectedCategories = new Set([...updatedTags, { id: tag.id, category: tag.category }].map(t => t.category));
+    
+    if (selectedCategories.size === allCategories.length) {
+      setActiveCategoryDropdown(null);
+    } else {
+      const nextCategory = allCategories.find(category => 
+        !selectedCategories.has(category)
+      );
+      if (nextCategory) {
+        setActiveCategoryDropdown(nextCategory);
+      } else {
+        setActiveCategoryDropdown(null);
+      }
+    }
+  };
 
-    setSelectedTags([...updatedTags, tagId]);
-    setActiveCategoryDropdown(null);
+  const handleCategoryClick = (category: "form" | "style" | "tone") => {
+    setActiveCategoryDropdown(activeCategoryDropdown === category ? null : category);
   };
 
   const removeTag = (tagId: string) => {
-    setSelectedTags(selectedTags.filter(id => id !== tagId));
+    setSelectedTags(selectedTags.filter(tag => tag.id !== tagId));
   };
 
   return (
@@ -101,8 +125,8 @@ export default function EnhancedPoetryChat() {
         <div className="relative">
           <div className="absolute left-4 -top-3 flex items-center space-x-2 flex-wrap gap-2">
             {selectedTags.length > 0 ? (
-              selectedTags.map(tagId => {
-                const tag = POETRY_TAGS.find(t => t.id === tagId);
+              selectedTags.map(selectedTag => {
+                const tag = POETRY_TAGS.find(t => t.id === selectedTag.id);
                 if (!tag) return null;
                 
                 return (
@@ -129,10 +153,12 @@ export default function EnhancedPoetryChat() {
                     type="button"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="flex items-center space-x-1 bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-600 hover:bg-gray-200 transition-colors shadow-sm"
-                    onClick={() => setActiveCategoryDropdown(category)}
+                    className={`flex items-center space-x-1 bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-600 hover:bg-gray-200 transition-colors shadow-sm ${
+                      activeCategoryDropdown === category ? 'bg-gray-200' : ''
+                    }`}
+                    onClick={() => handleCategoryClick(category)}
                   >
-                    <Tag className="w-4 h-4" />
+                    <TagIcon className="w-4 h-4" />
                     <span>Select {category}</span>
                   </motion.button>
                 ))}
@@ -158,7 +184,7 @@ export default function EnhancedPoetryChat() {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm transition-colors ${
-                        selectedTags.includes(tag.id)
+                        selectedTags.some(st => st.id === tag.id)
                           ? "bg-emerald-100 text-emerald-600"
                           : "hover:bg-gray-100 text-gray-600"
                       }`}
@@ -188,7 +214,6 @@ export default function EnhancedPoetryChat() {
             }}
           />
         </div>
-
 
         <div className="flex items-center space-x-4">
           <motion.input
