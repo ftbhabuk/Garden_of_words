@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Pencil } from 'lucide-react';
-import { PoetryForm, PoetryStyle, PoetryTone } from '../Services/promptService';
+import { PoetryForm, PoetryStyle, PoetryTone, POETRY_TAGS } from '../Services/promptService';
 
 interface PoetryOptionsSelectorProps {
   onSelectForm: (form: PoetryForm | undefined) => void;
@@ -18,22 +18,12 @@ export default function PoetryOptionsSelector({
   const [selectedForm, setSelectedForm] = useState<PoetryForm | undefined>();
   const [selectedStyle, setSelectedStyle] = useState<PoetryStyle | undefined>();
   const [selectedTone, setSelectedTone] = useState<PoetryTone | undefined>();
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [activeDropdown, setActiveDropdown] = useState<'form' | 'style' | 'tone' | null>(null);
 
-  const forms: PoetryForm[] = [
-    "Free Verse", "Haiku", "Sonnet", "Limerick", "Tanka",
-    "Villanelle", "Acrostic", "Cinquain", "Blank Verse", "Prose Poetry"
-  ];
-
-  const styles: PoetryStyle[] = [
-    "Romantic", "Contemporary", "Nature", "Urban",
-    "Philosophical", "Emotional", "Narrative", "Minimalist"
-  ];
-
-  const tones: PoetryTone[] = [
-    "Lyrical", "Dramatic", "Contemplative", "Whimsical",
-    "Melancholic", "Optimistic", "Dark", "Hopeful"
-  ];
+  // Filter tags by category
+  const formTags = POETRY_TAGS.filter(tag => tag.category === 'form');
+  const styleTags = POETRY_TAGS.filter(tag => tag.category === 'style');
+  const toneTags = POETRY_TAGS.filter(tag => tag.category === 'tone');
 
   const handleSelect = (type: 'form' | 'style' | 'tone', value: string) => {
     switch (type) {
@@ -72,7 +62,6 @@ export default function PoetryOptionsSelector({
 
   return (
     <div className="w-full">
-      {/* Always visible selector bar */}
       <div className="flex items-center gap-4 mb-6">
         {/* Form Selector */}
         <div className="relative">
@@ -99,13 +88,14 @@ export default function PoetryOptionsSelector({
           {activeDropdown === 'form' && (
             <div className="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-10">
               <div className="p-2">
-                {forms.map(form => (
+                {formTags.map(tag => (
                   <button
-                    key={form}
-                    className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded"
-                    onClick={() => handleSelect('form', form)}
+                    key={tag.id}
+                    className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded flex items-center gap-2"
+                    onClick={() => handleSelect('form', tag.type)}
                   >
-                    {form}
+                    <span>{tag.icon}</span>
+                    <span>{tag.label}</span>
                   </button>
                 ))}
               </div>
@@ -113,7 +103,7 @@ export default function PoetryOptionsSelector({
           )}
         </div>
 
-        {/* Style Selector */}
+        {/* Style Selector - Similar structure as Form Selector */}
         <div className="relative">
           {selectedStyle ? (
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-100 rounded-full">
@@ -138,13 +128,14 @@ export default function PoetryOptionsSelector({
           {activeDropdown === 'style' && (
             <div className="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-10">
               <div className="p-2">
-                {styles.map(style => (
+                {styleTags.map(tag => (
                   <button
-                    key={style}
-                    className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded"
-                    onClick={() => handleSelect('style', style)}
+                    key={tag.id}
+                    className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded flex items-center gap-2"
+                    onClick={() => handleSelect('style', tag.type)}
                   >
-                    {style}
+                    <span>{tag.icon}</span>
+                    <span>{tag.label}</span>
                   </button>
                 ))}
               </div>
@@ -152,7 +143,7 @@ export default function PoetryOptionsSelector({
           )}
         </div>
 
-        {/* Tone Selector */}
+        {/* Tone Selector - Similar structure as Form Selector */}
         <div className="relative">
           {selectedTone ? (
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-100 rounded-full">
@@ -177,13 +168,14 @@ export default function PoetryOptionsSelector({
           {activeDropdown === 'tone' && (
             <div className="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-10">
               <div className="p-2">
-                {tones.map(tone => (
+                {toneTags.map(tag => (
                   <button
-                    key={tone}
-                    className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded"
-                    onClick={() => handleSelect('tone', tone)}
+                    key={tag.id}
+                    className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded flex items-center gap-2"
+                    onClick={() => handleSelect('tone', tag.type)}
                   >
-                    {tone}
+                    <span>{tag.icon}</span>
+                    <span>{tag.label}</span>
                   </button>
                 ))}
               </div>
@@ -191,11 +183,6 @@ export default function PoetryOptionsSelector({
           )}
         </div>
       </div>
-
-      <textarea
-        placeholder="Plant your poetic seeds here..."
-        className="w-full h-32 p-4 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-      />
     </div>
   );
 }
