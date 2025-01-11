@@ -1,3 +1,4 @@
+// route.ts
 import { StreamingTextResponse } from "ai";
 import { OpenAIStream } from "ai";
 import OpenAI from "openai";
@@ -24,7 +25,7 @@ const groq = new OpenAI({
     baseURL: "https://api.groq.com/openai/v1",
 });
 
-export async function POST(req:Request) {
+export async function POST(req: Request) {
     // Rate limiting check
     if (ratelimit) {
         const ip = req.headers.get("x-real-ip") ?? "local";
@@ -36,7 +37,7 @@ export async function POST(req:Request) {
     }
 
     // Parse request body
-    const { text, prompt, tag, temperature } = await req.json();
+    const { text, prompt, tags, temperature } = await req.json();
     
     if (!prompt) {
         return new Response("Prompt is required", { status: 400 });
@@ -44,12 +45,18 @@ export async function POST(req:Request) {
 
     try {
         // Build the prompt using our PromptService
-        const promptConfig = { text, prompt, tag };
-        const finalPrompt = PromptService.buildPrompt(promptConfig);
+        const promptConfig = { 
+            text, 
+            prompt, 
+            selectedTags: Array.isArray(tags) ? tags : [], // Convert to array if not already
+            temperature: temperature || 0.7 
+        };
 
-        // Get the system message from PromptService
+        const finalPrompt = PromptService.buildPrompt(promptConfig);
         const systemMessage = PromptService.getSystemMessage();
 
+        // Get the system message from PromptService
+       
         // Create the stream with temperature parameter
         const response = await groq.chat.completions.create({
             model: "llama3-8b-8192",
@@ -57,7 +64,7 @@ export async function POST(req:Request) {
                 { role: "system", content: systemMessage },
                 { role: "user", content: finalPrompt }
             ],
-            temperature: temperature || 0.7, // Default temperature if not provided
+            temperature: temperature || 0.7,
             stream: true,
         });
 
