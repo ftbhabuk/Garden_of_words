@@ -6,43 +6,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Loader, Tag, X, Sliders } from "lucide-react";
-
-// Poetry types
-type PoetryForm = "Free Verse" | "Haiku" | "Sonnet" | "Limerick" | "Tanka" | "Villanelle" | "Prose Poetry";
-type PoetryStyle = "Romantic" | "Contemporary" | "Nature" | "Philosophical" | "Emotional";
-type PoetryTone = "Lyrical" | "Dramatic" | "Contemplative" | "Whimsical" | "Melancholic";
-
-interface Tag {
-  id: string;
-  label: string;
-  icon: string;
-  category: "form" | "style" | "tone";
-}
-
-const poetryTags: Tag[] = [
-  // Forms
-  { id: "free-verse", label: "Free Verse", icon: "🌿", category: "form" },
-  { id: "haiku", label: "Haiku", icon: "🍃", category: "form" },
-  { id: "sonnet", label: "Sonnet", icon: "📜", category: "form" },
-  { id: "limerick", label: "Limerick", icon: "🎭", category: "form" },
-  { id: "tanka", label: "Tanka", icon: "🌸", category: "form" },
-  { id: "villanelle", label: "Villanelle", icon: "📖", category: "form" },
-  { id: "prose-poetry", label: "Prose Poetry", icon: "✍️", category: "form" },
-  
-  // Styles
-  { id: "romantic", label: "Romantic", icon: "❤️", category: "style" },
-  { id: "contemporary", label: "Contemporary", icon: "🌆", category: "style" },
-  { id: "nature", label: "Nature", icon: "🌳", category: "style" },
-  { id: "philosophical", label: "Philosophical", icon: "🤔", category: "style" },
-  { id: "emotional", label: "Emotional", icon: "💫", category: "style" },
-  
-  // Tones
-  { id: "lyrical", label: "Lyrical", icon: "🎵", category: "tone" },
-  { id: "dramatic", label: "Dramatic", icon: "🎭", category: "tone" },
-  { id: "contemplative", label: "Contemplative", icon: "🌙", category: "tone" },
-  { id: "whimsical", label: "Whimsical", icon: "✨", category: "tone" },
-  { id: "melancholic", label: "Melancholic", icon: "🌧️", category: "tone" },
-];
+import { POETRY_TAGS } from "../Services/promptService";
 
 const sliderClass = {
   wrapper: "relative h-2 bg-gray-200 rounded-full",
@@ -91,12 +55,12 @@ export default function EnhancedPoetryChat() {
   }, []);
 
   const handleTagSelect = (tagId: string) => {
-    const tag = poetryTags.find(t => t.id === tagId);
+    const tag = POETRY_TAGS.find(t => t.id === tagId);
     if (!tag) return;
 
     // Remove any existing tag from the same category
     const updatedTags = selectedTags.filter(id => {
-      const existingTag = poetryTags.find(t => t.id === id);
+      const existingTag = POETRY_TAGS.find(t => t.id === id);
       return existingTag?.category !== tag.category;
     });
 
@@ -138,7 +102,7 @@ export default function EnhancedPoetryChat() {
           <div className="absolute left-4 -top-3 flex items-center space-x-2 flex-wrap gap-2">
             {selectedTags.length > 0 ? (
               selectedTags.map(tagId => {
-                const tag = poetryTags.find(t => t.id === tagId);
+                const tag = POETRY_TAGS.find(t => t.id === tagId);
                 if (!tag) return null;
                 
                 return (
@@ -185,7 +149,7 @@ export default function EnhancedPoetryChat() {
                 exit={{ opacity: 0, y: -10 }}
                 className="absolute left-0 top-8 bg-white rounded-lg shadow-xl p-2 z-10 grid grid-cols-2 gap-2 min-w-[200px] border border-gray-200"
               >
-                {poetryTags
+                {POETRY_TAGS
                   .filter(tag => tag.category === activeCategoryDropdown)
                   .map(tag => (
                     <motion.button
