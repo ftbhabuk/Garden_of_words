@@ -13,6 +13,7 @@ import {
   SheetTrigger,
 } from "./ui/sheet";
  import { DialogTitle, DialogDescription } from "@radix-ui/react-dialog";
+import FlowerAnimation from "./FlowerAnimation";
 
  export const Navbar = () => {
   const { isSignedIn, isLoaded } = useAuth();
@@ -128,7 +129,9 @@ import {
 
             {/* Mobile Menu */}
             <div className="md:hidden">
+              
               <Sheet>
+
                 <SheetTrigger asChild>
                   <Button 
                     variant="ghost" 

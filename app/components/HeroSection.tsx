@@ -2,12 +2,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Feather, Stars, Sparkles } from 'lucide-react';
+import FlowerAnimation from './FlowerAnimation';
 
 const HeroSection = () => {
   return (
     <div className="relative h-screen flex items-center justify-center overflow-hidden">
       {/* Animated background elements */}
+    
+      <FlowerAnimation />
       <div className="absolute inset-0">
+        
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.1 }}
@@ -16,9 +20,10 @@ const HeroSection = () => {
         />
         <div className="absolute inset-0 bg-[url('/api/placeholder/1920/1080')] bg-cover bg-center opacity-5" />
       </div>
-
+      {/* <FlowerAnimation /> */}
       {/* Floating elements */}
       <motion.div
+      
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 0.2, y: 0 }}
         transition={{
@@ -91,6 +96,10 @@ const HeroSection = () => {
   }}
 >
   Start Writing
+   <div >
+      {/* <FlowerAnimation /> */}
+      
+      </div>
 </button>
  
         </motion.div>
@@ -104,6 +113,7 @@ const HeroSection = () => {
         className="absolute bottom-0 w-full h-24 bg-gradient-to-t from-white to-transparent pointer-events-none"
       />
     </div>
+    
   );
 };
 
