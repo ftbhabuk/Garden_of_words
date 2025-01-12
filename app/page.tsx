@@ -7,6 +7,7 @@ import PoetryGuide from "./components/WritingGuide";
 import PoetryOrigins from "./components/PoetryOrigins";
 import Footer from "./components/Footer";
 import HeroSection from "./components/HeroSection";
+import FlowerAnimation from "./components/FlowerAnimation";
 
 export default function Home() {
     return (
@@ -25,6 +26,8 @@ export default function Home() {
           <ChatComponent />
         </div>
         <Footer />
+         {/* <FlowerAnimation /> */}
       </div>
+      
     );
   }
