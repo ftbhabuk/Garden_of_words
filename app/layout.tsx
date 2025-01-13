@@ -6,14 +6,7 @@ import { Toaster } from "sonner";
 import { ClerkProvider } from '@clerk/nextjs';
 import { Navbar } from "./components/navbar"; // Importing Navbar
 
-export const metadata: Metadata = {
-  title: "Magic Spell",
-  description: "AI prompting built into your <textarea>",
-  metadataBase: new URL("https://magic-spell.vercel.app"),
-  twitter: {
-    card: "summary_large_image",
-  },
-};
+
 
 export const viewport: Viewport = {
   maximumScale: 1, // Disable auto-zoom on mobile Safari
