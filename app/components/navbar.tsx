@@ -1,21 +1,46 @@
 'use client';
-
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { MaxWidthWrapper } from "./max-width-wrapper";
 import { SignInButton, useAuth, useClerk } from "@clerk/nextjs";
-import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
-import { Trees, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import {
   Sheet,
   SheetContent,
   SheetTrigger,
 } from "./ui/sheet";
- import { DialogTitle, DialogDescription } from "@radix-ui/react-dialog";
-import FlowerAnimation from "./FlowerAnimation";
+import { DialogTitle, DialogDescription } from "@radix-ui/react-dialog";
 
- export const Navbar = () => {
+const RoseIcon = () => (
+  <svg 
+    viewBox="0 0 24 24" 
+    className="h-6 w-6"
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="1.5"
+  >
+    <path d="M12 4C12 4 14 6 14 8C14 10 12 12 12 12C12 12 10 10 10 8C10 6 12 4 12 4Z" />
+    <path d="M12 12C12 12 16 14 16 17C16 20 12 20 12 20C12 20 8 20 8 17C8 14 12 12 12 12Z" />
+    <path d="M12 12C12 12 14 9 17 9C20 9 20 12 20 12C20 12 20 15 17 15C14 15 12 12 12 12Z" />
+    <path d="M12 12C12 12 10 9 7 9C4 9 4 12 4 12C4 12 4 15 7 15C10 15 12 12 12 12Z" />
+  </svg>
+);
+
+const Logo = ({ className = '' }) => (
+  <div className={`flex items-center space-x-2 group ${className}`}>
+    <span className="text-rose-600 transition-colors duration-300 group-hover:text-rose-700">
+      <RoseIcon />
+    </span>
+    <span className="text-lg font-serif">
+      Garden
+      <span className="text-gray-400 mx-1">of</span>
+      <span className="text-rose-600 group-hover:text-rose-700 transition-colors duration-300">Words</span>
+    </span>
+  </div>
+);
+
+export const Navbar = () => {
   const { isSignedIn, isLoaded } = useAuth();
   const [mounted, setMounted] = useState(false);
   const [activeSection, setActiveSection] = useState('');
@@ -45,9 +70,7 @@ import FlowerAnimation from "./FlowerAnimation";
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  if (!mounted || !isLoaded) {
-    return null;
-  }
+  if (!mounted || !isLoaded) return null;
 
   const handleSignOut = async () => {
     try {
@@ -80,136 +103,102 @@ import FlowerAnimation from "./FlowerAnimation";
     { id: 'chat', label: 'Creative Space' },
   ];
 
-  const NavLinks = ({ onItemClick }: { onItemClick?: () => void }) => (
+  const NavLinks = ({ onItemClick, isMobile = false }: { onItemClick?: () => void, isMobile?: boolean }) => (
     <>
       {navItems.map((item) => (
-        <Button
+        <div
           key={item.id}
-          variant="ghost"
           onClick={() => {
             scrollToSection(item.id);
             onItemClick?.();
           }}
-          className={`w-full justify-start text-lg font-medium transition-all duration-200 
+          className={`cursor-pointer px-4 py-2 text-sm font-medium transition-all duration-300
+            ${isMobile ? 'w-full text-center my-2' : ''}
             ${activeSection === item.id
-              ? 'text-emerald-600 bg-gradient-to-r from-emerald-50 to-emerald-100/80 shadow-sm'
-              : 'text-gray-600 hover:text-emerald-600 hover:bg-gradient-to-r hover:from-emerald-50/50 hover:to-transparent'
-            } rounded-lg px-4 py-6 backdrop-blur-sm`}
+              ? 'text-rose-700'
+              : 'text-gray-600 hover:text-rose-600'
+            }`}
         >
           {item.label}
-        </Button>
+        </div>
       ))}
     </>
   );
 
+  const AuthButton = ({ className = '' }) => (
+    isSignedIn ? (
+      <div
+        onClick={handleSignOut}
+        className={`cursor-pointer text-sm font-medium text-rose-600 hover:text-rose-700 transition-colors duration-300 ${className}`}
+      >
+        Sign out
+      </div>
+    ) : (
+      <SignInButton mode="modal">
+        <div className={`cursor-pointer text-sm font-medium text-rose-600 hover:text-rose-700 transition-colors duration-300 ${className}`}>
+          Sign in
+        </div>
+      </SignInButton>
+    )
+  );
+
   return (
     <div className="fixed w-full top-0 z-50">
-      <nav className="h-16 border-b border-gray-200 bg-white/80 backdrop-blur-lg shadow-sm">
-        <MaxWidthWrapper>
-          <div className="flex h-16 items-center justify-between md:justify-start">
-            {/* Logo */}
-            <div className="flex-1 flex md:flex-none">
-              <Link
-                href="/"
-                className="mx-auto md:mx-0 flex items-center space-x-2 hover:opacity-90 transition-opacity bg-gradient-to-r from-white to-gray-50 px-3 py-1.5 rounded-lg shadow-sm"
-              >
-                <Trees className="h-6 w-6 text-emerald-600" />
-                <span className="text-xl font-bold">
-                  Garden
-                  <span className="text-gray-500 mx-1">of</span>
-                  <span className="text-emerald-600">Words</span>
-                </span>
-              </Link>
-            </div>
+  <nav className="h-16 border-b border-rose-100/50 bg-white/90 backdrop-blur-sm">
+    <MaxWidthWrapper>
+      <div className="flex h-16 items-center justify-between">
+        {/* Logo - Center on mobile, left on desktop */}
+        <div className="flex-1 flex justify-center md:justify-start">
+          <Link href="/">
+            <Logo />
+          </Link>
+        </div>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-2 mx-8 flex-1 justify-center">
-              <NavLinks />
-            </div>
+        {/* Mobile Menu Button - Right */}
+        <div className="md:hidden">
+          <Sheet>
+            <SheetTrigger className="p-2 hover:bg-rose-50/50 rounded-full transition-colors duration-300">
+              <Menu className="h-5 w-5 text-rose-600" />
+            </SheetTrigger>
+            <SheetContent
+              side="right"
+              className="w-full sm:max-w-sm p-6 bg-white/95 backdrop-blur-lg"
+            >
+              <div className="mb-8">
+                <Logo className="justify-center" />
+              </div>
+              <div className="flex flex-col items-center space-y-2">
+                <NavLinks
+                  isMobile={true}
+                  onItemClick={() => {
+                    const closeButton = document.querySelector(
+                      '[data-state="open"]'
+                    ) as HTMLButtonElement;
+                    closeButton?.click();
+                  }}
+                />
+              </div>
+              <div className="absolute bottom-6 left-6 right-6 flex justify-center">
+                <AuthButton className="text-center" />
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
 
-            {/* Mobile Menu */}
-            <div className="md:hidden">
-              
-              <Sheet>
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center space-x-6">
+          <NavLinks />
+        </div>
 
-                <SheetTrigger asChild>
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    className="hover:bg-emerald-50/50 rounded-lg shadow-sm"
-                  >
-                    <Menu className="h-6 w-6 text-gray-600" />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent
-  side="right"
-  className="w-full sm:max-w-sm p-6"
-  style={{
-    backgroundImage: "linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%)",
-  }}
->
-  <DialogTitle className="sr-only">Menu</DialogTitle>
-  <DialogDescription className="sr-only">
-    Navigate through the menu options.
-  </DialogDescription>
-  <div className="flex flex-col space-y-2 mt-8">
-    <NavLinks   
-      onItemClick={() => {
-        const closeButton = document.querySelector(
-          '[data-state="open"]'
-        ) as HTMLButtonElement;
-        closeButton?.click();
-      }}
-    />
-  </div>
-  <div className="absolute bottom-6 left-6 right-6">
-    <div className="flex justify-center">
-      {isSignedIn ? (
-        <Button
-          onClick={handleSignOut}
-          className="w-full font-medium bg-gradient-to-r from-rose-50 to-rose-100 hover:from-rose-100 hover:to-rose-200 text-rose-600 border border-rose-200 shadow-sm transition-all duration-200"
-        >
-          Sign out
-        </Button>
-      ) : (
-        <SignInButton mode="modal">
-          <Button
-            className="w-full font-medium bg-gradient-to-r from-emerald-50 to-emerald-100 hover:from-emerald-100 hover:to-emerald-200 text-emerald-600 border border-emerald-200 shadow-sm transition-all duration-200"
-          >
-            Sign in
-          </Button>
-        </SignInButton>
-      )}
-    </div>
-  </div>
-</SheetContent>
+        {/* Desktop Auth */}
+        <div className="hidden md:block">
+          <AuthButton />
+        </div>
+      </div>
+    </MaxWidthWrapper>
+  </nav>
+</div>
 
-              </Sheet>
-            </div>
-
-            {/* Desktop Auth Buttons */}
-            <div className="hidden md:flex items-center">
-              {isSignedIn ? (
-                <Button
-                  onClick={handleSignOut}
-                  className="font-medium bg-gradient-to-r from-rose-50 to-rose-100 hover:from-rose-100 hover:to-rose-200 text-rose-600 border border-rose-200 shadow-sm transition-all duration-200"
-                >
-                  Sign out
-                </Button>
-              ) : (
-                <SignInButton mode="modal">
-                  <Button
-                    className="font-medium bg-gradient-to-r from-emerald-50 to-emerald-100 hover:from-emerald-100 hover:to-emerald-200 text-emerald-600 border border-emerald-200 shadow-sm transition-all duration-200"
-                  >
-                    Sign in
-                  </Button>
-                </SignInButton>
-              )}
-            </div>
-          </div>
-        </MaxWidthWrapper>
-      </nav>
-    </div>
   );
 };
 
