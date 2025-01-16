@@ -144,7 +144,7 @@ export const Navbar = () => {
 
   return (
     <div className="fixed w-full top-0 z-50">
-  <nav className="h-16 border-b border-rose-100/50 bg-white/90 backdrop-blur-sm">
+  <nav className="h-16 border-b border-rose-100/50 bg-white/80 backdrop-blur-sm">
     <MaxWidthWrapper>
       <div className="flex h-16 items-center justify-between">
         {/* Logo - Center on mobile, left on desktop */}
