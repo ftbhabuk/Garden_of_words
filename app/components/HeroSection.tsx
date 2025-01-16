@@ -9,7 +9,7 @@ const HeroSection = () => {
     <div className="relative min-h-screen flex items-center justify-center bg-stone-40">
       <FlowerAnimation/>
       {/* Subtle background pattern */}
-      <div className="absolute inset-0 opacity-5">
+      {/* <div className="absolute inset-0 opacity-5">
         {[...Array(40)].map((_, i) => (
           <div
             key={i}
@@ -20,7 +20,7 @@ const HeroSection = () => {
             }}
           />
         ))}
-      </div>
+      </div> */}
 
       {/* Main content */}
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
