@@ -3,7 +3,6 @@ import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Toaster } from "sonner";
-import { ClerkProvider } from '@clerk/nextjs';
 import { Navbar } from "./components/navbar"; // Importing Navbar
 
 
@@ -18,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+  
       <html lang="en">
         <body className={`pt-16 font-family-'Roboto', font-sans flex flex-col items-center px-3 min-h-dvh`}>
           <Navbar /> {/* Adding Navbar here */}
@@ -31,7 +30,7 @@ export default function RootLayout({
           <SpeedInsights />
         </body>
       </html>
-    </ClerkProvider>
+   
   );
 }
 
