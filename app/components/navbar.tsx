@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { MaxWidthWrapper } from "./max-width-wrapper";
@@ -40,52 +40,18 @@ const Logo = ({ className = '' }) => (
 
 export const Navbar = () => {
   const [mounted, setMounted] = useState(false);
-  const [activeSection, setActiveSection] = useState('');
 
   useEffect(() => {
     setMounted(true);
-    
-    const handleScroll = () => {
-      const sections = ['explore', 'journey', 'craft', 'chat'];
-      const scrollPosition = window.scrollY + 100;
-
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const { offsetTop, offsetHeight } = element;
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(section);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   if (!mounted) return null;
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const offset = 80;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-    }
-  };
-
   const navItems = [
-    { id: 'explore', label: 'Explore' },
-    { id: 'journey', label: 'Journey' },
-    { id: 'craft', label: 'Craft' },
-    { id: 'chat', label: 'Creative Space' },
+    { id: 'what-is-poetry', label: 'Explore', href: '/what-is-poetry' },
+    { id: 'journey', label: 'Journey', href: '/journey' },
+    { id: 'craft', label: 'Craft', href: '/craft' },
+    { id: 'creative-space', label: 'Creative Space', href: '/creative-space' },
   ];
 
   const NavLinks = ({ onItemClick, isMobile = false }: { onItemClick?: () => void, isMobile?: boolean }) => (
@@ -93,18 +59,20 @@ export const Navbar = () => {
       {navItems.map((item) => (
         <div
           key={item.id}
-          onClick={() => {
-            scrollToSection(item.id);
-            onItemClick?.();
-          }}
           className={`cursor-pointer px-4 py-2 text-sm font-medium transition-all duration-300
             ${isMobile ? 'w-full text-center my-2' : ''}
-            ${activeSection === item.id
+            ${window.location.pathname === item.href
               ? 'text-rose-700'
               : 'text-gray-600 hover:text-rose-600'
             }`}
         >
-          {item.label}
+          <Link
+            href={item.href}
+            onClick={onItemClick}
+            className="block w-full h-full"
+          >
+            {item.label}
+          </Link>
         </div>
       ))}
     </>
