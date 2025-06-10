@@ -101,7 +101,7 @@ const FlowerAnimation = () => {
   ];
 
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden">
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
       <div className="absolute w-full h-full">
         {flowers.map((flower, i) => (
           <Flower

@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 import HeroSection from "./components/HeroSection";
 import FlowerAnimation from "./components/FlowerAnimation";
 import PoetryDemoSection from "./components/PoetryDemoSection";
+import FAQAndFeatures from "./components/FAQAndFeatures";
 
 export default function Home() {
     return (
@@ -25,8 +26,9 @@ export default function Home() {
         </div> */}
         <PoetryDemoSection/>
         <div id="chat">
-          <ChatComponent />
+          {/* <ChatComponent /> */}
         </div>
+        <FAQAndFeatures/>
         <Footer />
          {/* <FlowerAnimation /> */}
       </div>
