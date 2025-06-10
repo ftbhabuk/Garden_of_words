@@ -2,8 +2,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { MaxWidthWrapper } from "./max-width-wrapper";
-import { SignInButton, useAuth, useClerk } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
 import { Menu } from "lucide-react";
 import {
   Sheet,
@@ -41,11 +39,8 @@ const Logo = ({ className = '' }) => (
 );
 
 export const Navbar = () => {
-  const { isSignedIn, isLoaded } = useAuth();
   const [mounted, setMounted] = useState(false);
   const [activeSection, setActiveSection] = useState('');
-  const { signOut } = useClerk();
-  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
@@ -70,17 +65,7 @@ export const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  if (!mounted || !isLoaded) return null;
-
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-      router.push("/");
-      router.refresh();
-    } catch (error) {
-      console.error("Error signing out:", error);
-    }
-  };
+  if (!mounted) return null;
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -97,9 +82,9 @@ export const Navbar = () => {
   };
 
   const navItems = [
-    { id: 'explore', label: 'Explore Poetry' },
-    { id: 'journey', label: 'Poetic Journey' },
-    { id: 'craft', label: 'Master the Craft' },
+    { id: 'explore', label: 'Explore' },
+    { id: 'journey', label: 'Journey' },
+    { id: 'craft', label: 'Craft' },
     { id: 'chat', label: 'Creative Space' },
   ];
 
@@ -125,80 +110,54 @@ export const Navbar = () => {
     </>
   );
 
-  const AuthButton = ({ className = '' }) => (
-    isSignedIn ? (
-      <div
-        onClick={handleSignOut}
-        className={`cursor-pointer text-sm font-medium text-rose-600 hover:text-rose-700 transition-colors duration-300 ${className}`}
-      >
-        Sign out
-      </div>
-    ) : (
-      <SignInButton mode="modal">
-        <div className={`cursor-pointer text-sm font-medium text-rose-600 hover:text-rose-700 transition-colors duration-300 ${className}`}>
-          Sign in
-        </div>
-      </SignInButton>
-    )
-  );
-
   return (
     <div className="fixed w-full top-0 z-50">
-  <nav className="h-16 border-b border-rose-100/50 bg-white/80 backdrop-blur-sm">
-    <MaxWidthWrapper>
-      <div className="flex h-16 items-center justify-between">
-        {/* Logo - Center on mobile, left on desktop */}
-        <div className="flex-1 flex justify-center md:justify-start">
-          <Link href="/">
-            <Logo />
-          </Link>
-        </div>
+      <nav className="h-16 border-b border-rose-100/50 bg-white/80 backdrop-blur-sm">
+        <MaxWidthWrapper>
+          <div className="flex h-16 items-center justify-between">
+            {/* Logo - Center on mobile, left on desktop */}
+            <div className="flex-1 flex justify-center md:justify-start">
+              <Link href="/">
+                <Logo />
+              </Link>
+            </div>
 
-        {/* Mobile Menu Button - Right */}
-        <div className="md:hidden">
-          <Sheet>
-            <SheetTrigger className="p-2 hover:bg-rose-50/50 rounded-full transition-colors duration-300">
-              <Menu className="h-5 w-5 text-rose-600" />
-            </SheetTrigger>
-            <SheetContent
-              side="right"
-              className="w-full sm:max-w-sm p-6 bg-white/95 backdrop-blur-lg"
-            >
-              <div className="mb-8">
-                <Logo className="justify-center" />
-              </div>
-              <div className="flex flex-col items-center space-y-2">
-                <NavLinks
-                  isMobile={true}
-                  onItemClick={() => {
-                    const closeButton = document.querySelector(
-                      '[data-state="open"]'
-                    ) as HTMLButtonElement;
-                    closeButton?.click();
-                  }}
-                />
-              </div>
-              <div className="absolute bottom-6 left-6 right-6 flex justify-center">
-                <AuthButton className="text-center" />
-              </div>
-            </SheetContent>
-          </Sheet>
-        </div>
+            {/* Mobile Menu Button - Right */}
+            <div className="md:hidden">
+              <Sheet>
+                <SheetTrigger className="p-2 hover:bg-rose-50/50 rounded-full transition-colors duration-300">
+                  <Menu className="h-5 w-5 text-rose-600" />
+                </SheetTrigger>
+                <SheetContent
+                  side="right"
+                  className="w-full sm:max-w-sm p-6 bg-white/95 backdrop-blur-lg"
+                >
+                  <div className="mb-8">
+                    <Logo className="justify-center" />
+                  </div>
+                  <div className="flex flex-col items-center space-y-2">
+                    <NavLinks
+                      isMobile={true}
+                      onItemClick={() => {
+                        const closeButton = document.querySelector(
+                          '[data-state="open"]'
+                        ) as HTMLButtonElement;
+                        closeButton?.click();
+                      }}
+                    />
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-6">
-          <NavLinks />
-        </div>
-
-        {/* Desktop Auth */}
-        <div className="hidden md:block">
-          <AuthButton />
-        </div>
-      </div>
-    </MaxWidthWrapper>
-  </nav>
-</div>
-
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-6">
+              <NavLinks />
+            </div>
+          </div>
+        </MaxWidthWrapper>
+      </nav>
+    </div>
   );
 };
 

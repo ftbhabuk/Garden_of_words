@@ -1,15 +1,14 @@
-"use client"
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Sparkles } from 'lucide-react';
-import FlowerAnimation from './FlowerAnimation';
+"use client";
+import React from "react";
+import { motion } from "framer-motion";
+import { Sparkles } from "lucide-react";
+import FlowerAnimation from "./FlowerAnimation";
 
 const HeroSection = () => {
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-stone-40">
-      <FlowerAnimation/>
-      {/* Subtle background pattern */}
-      {/* <div className="absolute inset-0 opacity-5">
+      <FlowerAnimation />
+      <div className="absolute inset-0 opacity-5">
         {[...Array(40)].map((_, i) => (
           <div
             key={i}
@@ -20,18 +19,9 @@ const HeroSection = () => {
             }}
           />
         ))}
-      </div> */}
+      </div>
 
-      {/* Main content */}
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-        {/* Subtle decorative line */}
-        {/* <motion.div
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          className="w-16 h-px bg-stone-300 mx-auto mb-12"
-        /> */}
-
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -56,8 +46,8 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="text-lg text-stone-500 mb-12 font-light leading-relaxed max-w-2xl mx-auto"
         >
-          A sanctuary where thoughts bloom into poetry, 
-          where every word finds its perfect place in the garden of imagination
+          A sanctuary where thoughts bloom into poetry, where every word finds
+          its perfect place in the garden of imagination
         </motion.p>
 
         <motion.div
@@ -80,11 +70,9 @@ const HeroSection = () => {
         </motion.div>
       </div>
 
-      {/* Subtle corner decorations with rounded corners */}
       <div className="absolute top-8 left-8 w-32 h-32 border-l border-t border-stone-200 rounded-tl-xl" />
       <div className="absolute bottom-8 right-8 w-32 h-32 border-r border-b border-stone-200 rounded-br-xl" />
 
-      {/* Minimal floating elements */}
       {[...Array(3)].map((_, i) => (
         <motion.div
           key={i}

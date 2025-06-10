@@ -8,12 +8,13 @@ import PoetryOrigins from "./components/PoetryOrigins";
 import Footer from "./components/Footer";
 import HeroSection from "./components/HeroSection";
 import FlowerAnimation from "./components/FlowerAnimation";
+import PoetryDemoSection from "./components/PoetryDemoSection";
 
 export default function Home() {
     return (
       <div className="min-h-screen">
         <HeroSection />
-        <div id="explore">
+        {/* <div id="explore">
           <WhatIsPoetry />
         </div>
         <div id="journey">
@@ -21,7 +22,8 @@ export default function Home() {
         </div>
         <div id="craft">
           <PoetryGuide />
-        </div>
+        </div> */}
+        <PoetryDemoSection/>
         <div id="chat">
           <ChatComponent />
         </div>
