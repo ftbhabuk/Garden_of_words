@@ -15,7 +15,7 @@ const ratelimit = process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN
           }),
           limiter: Ratelimit.slidingWindow(10, "5 m"),
           analytics: true,
-          prefix: "magic-spell",
+          prefix: "Garden-of-words",
       })
     : false;
 
