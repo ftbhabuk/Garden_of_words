@@ -4,9 +4,3 @@
 
 
 /* Add this to your globals.css */
-body {
-    background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
-    background-attachment: fixed;
-    background-size: cover;
-  }
-  

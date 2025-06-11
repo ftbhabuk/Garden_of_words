@@ -1,99 +1,75 @@
-"use client";
-import React from "react";
-import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
-import FlowerAnimation from "./FlowerAnimation";
+import { Button } from "./ui/button"
+import Image from "next/image"
+import Navbar from "./navbar"
 
-const HeroSection = () => {
+export default function Component() {
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-stone-40">
-      <FlowerAnimation />
-      <div className="absolute inset-0 opacity-5">
-        {[...Array(40)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-px h-px pink-300/30"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-          />
-        ))}
-      </div>
-
-      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="mb-8"
-        >
-          <Sparkles className="w-8 h-8 mx-auto text-stone-600 opacity-60" />
-        </motion.div>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="font-serif text-6xl mb-6 tracking-wide text-stone-800"
-        >
-          Garden of Words
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-lg text-stone-500 mb-12 font-light leading-relaxed max-w-2xl mx-auto"
-        >
-          A sanctuary where thoughts bloom into poetry, where every word finds
-          its perfect place in the garden of imagination
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-        >
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => {
-              const chatSection = document.getElementById("chat");
-              chatSection?.scrollIntoView({ behavior: "smooth" });
-            }}
-            className="px-8 py-3 bg-stone-50 text-stone-700 rounded-md border border-stone-200 
-                       shadow-sm hover:shadow-md hover:border-stone-300 transition-all duration-300"
-          >
-            Begin Your Journey
-          </motion.button>
-        </motion.div>
-      </div>
-
-      <div className="absolute top-8 left-8 w-32 h-32 border-l border-t border-stone-200 rounded-tl-xl" />
-      <div className="absolute bottom-8 right-8 w-32 h-32 border-r border-b border-stone-200 rounded-br-xl" />
-
-      {[...Array(3)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute w-1 h-1 bg-red-800 rounded-full"
-          animate={{
-            y: [0, -20, 0],
-            opacity: [0.2, 0.5, 0.2],
-          }}
-          transition={{
-            duration: 9 + i,
-            repeat: Infinity,
-            delay: i * 1.8,
-          }}
-          style={{
-            left: `${30 + i * 20}%`,
-            top: `${40 + i * 10}%`,
-          }}
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/flower.jpg"
+          alt="Delicate flower blooming in a poetic garden"
+          fill
+          className="object-cover object-[center_20%]" 
+          priority
         />
-      ))}
-    </div>
-  );
-};
+        <div className="absolute inset-0 bg-black/30" />
+      </div>
 
-export default HeroSection;
+      {/* Navbar - Now overlaid on the hero section */}
+      <div className="relative z-20">
+        <Navbar />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 flex flex-col min-h-screen">
+        {/* Main Content - Full Viewport Hero */}
+        <main className="min-h-screen flex flex-col justify-center px-6 md:px-12">
+          <div className="max-w-7xl mx-auto w-full">
+            <div className="grid lg:grid-cols-2 gap-16 items-center">
+              {/* Left Column - Hero Text */}
+              <div className="space-y-8">
+                <div className="space-y-6">
+                  <h1 className="text-6xl md:text-7xl lg:text-8xl font-extralight text-white leading-tight tracking-tight">
+                    Garden of Words
+                  </h1>
+                  <p className="text-2xl md:text-3xl text-white/70 font-extralight tracking-wide">
+                    Where Poetry Blossoms.
+                  </p>
+                </div>
+              </div>
+              
+              {/* Right Column - Button and Description */}
+              <div className="flex flex-col h-[600px]">
+                <div className="flex-grow" />
+                <div className="space-y-4">
+                  <div className="flex justify-start">
+                    <Button
+                      size="lg"
+                      className="bg-white/5 hover:bg-white/10 text-white border border-white/20 backdrop-blur-sm rounded-full px-10 py-4 text-lg font-light transition-all duration-300"
+                    >
+                      Begin Your Verse
+                    </Button>
+                  </div>
+                  
+                  {/* Glossy Horizontal Line */}
+                  <div className="w-full h-px bg-gradient-to-r from-transparent via-white/100 to-transparent backdrop-blur-sm mt-4" />
+                  
+                  <div className="space-y-4 text-white/70 mt-12">
+                    <p className="text-base leading-relaxed font-light">
+                      Poetry begins with a single word, a seed that grows into verses. In this garden, every thought finds its rhythm.
+                    </p>
+                    <p className="text-base leading-relaxed font-light">
+                      Garden of Words is your sanctuary for creativity. A space to weave emotions, craft stanzas, and let imagination bloom. Less chaos. More poetry.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  )
+}
