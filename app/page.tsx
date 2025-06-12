@@ -1,3 +1,4 @@
+'use client'
 import React from "react";
 import ChatComponent from "./components/ChatComponent";
 import { BookOpen, Feather, History, Users, HelpCircle } from "lucide-react";
