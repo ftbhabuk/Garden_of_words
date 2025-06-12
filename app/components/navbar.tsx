@@ -1,7 +1,10 @@
 "use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
+  const pathname = usePathname(); // Use Next.js hook instead of window.location
+  
   const navItems = [
     { id: 'what-is-poetry', label: 'Explore', href: '/what-is-poetry' },
     { id: 'journey', label: 'Journey', href: '/journey' },
@@ -17,7 +20,7 @@ export default function Navbar() {
           <div className="w-6 h-6 bg-white rounded-sm flex items-center justify-center">
             <div className="w-3 h-3 bg-black rounded-sm transform rotate-45" />
           </div>
-
+          
           {/* Navigation */}
           <nav className="flex items-center space-x-6">
             {navItems.map((item) => (
@@ -25,7 +28,7 @@ export default function Navbar() {
                 key={item.id}
                 href={item.href}
                 className={`text-sm font-light transition-colors ${
-                  window.location.pathname === item.href
+                  pathname === item.href
                     ? 'text-white'
                     : 'text-white/80 hover:text-white'
                 }`}

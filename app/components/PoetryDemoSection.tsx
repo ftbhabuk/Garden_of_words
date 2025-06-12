@@ -1,11 +1,12 @@
-"use client"
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Button } from "./ui/button"
-import Image from "next/image"
+"use client";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "./ui/button";
+import Image from "next/image";
 
 const PoetryDemoSection = () => {
-  const [currentExample, setCurrentExample] = useState(0)
+  const [currentExample, setCurrentExample] = useState(0);
+  const [isClient, setIsClient] = useState(false);
 
   const poetryExamples = [
     {
@@ -23,18 +24,20 @@ const PoetryDemoSection = () => {
       tags: ["Free Verse", "Urban", "Atmospheric"],
       result: `The city weeps\nin silver sheets,\neach drop a story\ntold in concrete whispers...`,
     },
-  ]
+  ];
 
   useEffect(() => {
+    setIsClient(true); // Confirm client-side rendering
     const interval = setInterval(() => {
-      setCurrentExample((prev) => (prev + 1) % poetryExamples.length)
-    }, 5000)
-    return () => clearInterval(interval)
-  }, [])
+      setCurrentExample((prev) => (prev + 1) % poetryExamples.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [poetryExamples.length]);
+
+  if (!isClient) return null; // Prevent rendering on server
 
   return (
     <section className="py-32 relative min-h-screen">
-      {/* New Background with Pen Image */}
       <div className="absolute inset-0 z-0">
         <Image
           src="/pen.webp"
@@ -44,10 +47,7 @@ const PoetryDemoSection = () => {
         />
         <div className="absolute inset-0 bg-black/50" />
       </div>
-
-      {/* Additional gradient overlay for better text readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/40 z-[1]" />
-
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -63,9 +63,7 @@ const PoetryDemoSection = () => {
             Watch how a simple thought transforms into beautiful verse. From idea to inspiration in moments.
           </p>
         </motion.div>
-
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Left: Video/Demo Placeholder */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -90,13 +88,9 @@ const PoetryDemoSection = () => {
                 </div>
               </div>
             </div>
-
-            {/* Glowing corner accents */}
             <div className="absolute -top-3 -left-3 w-12 h-12 border-l-2 border-t-2 border-white/20 rounded-tl-2xl" />
             <div className="absolute -bottom-3 -right-3 w-12 h-12 border-r-2 border-b-2 border-white/20 rounded-br-2xl" />
           </motion.div>
-
-          {/* Right: Live Examples */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -106,7 +100,6 @@ const PoetryDemoSection = () => {
           >
             <div className="space-y-8">
               <h3 className="text-3xl font-extralight text-white tracking-wide">From Thought to Poetry</h3>
-
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentExample}
@@ -116,7 +109,6 @@ const PoetryDemoSection = () => {
                   transition={{ duration: 0.6 }}
                   className="space-y-6"
                 >
-                  {/* Input Section */}
                   <div className="p-6 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl">
                     <div className="text-sm text-white/50 mb-3 font-light">You whisper:</div>
                     <div className="text-white/90 italic font-light text-lg">
@@ -133,8 +125,6 @@ const PoetryDemoSection = () => {
                       ))}
                     </div>
                   </div>
-
-                  {/* Arrow */}
                   <div className="flex justify-center">
                     <div className="w-8 h-8 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20">
                       <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -147,8 +137,6 @@ const PoetryDemoSection = () => {
                       </svg>
                     </div>
                   </div>
-
-                  {/* Output Section */}
                   <div className="p-6 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md border border-white/20 rounded-2xl">
                     <div className="text-sm text-white/50 mb-4 font-light">Magic unfolds:</div>
                     <div className="text-white font-light text-lg leading-relaxed whitespace-pre-line">
@@ -157,8 +145,6 @@ const PoetryDemoSection = () => {
                   </div>
                 </motion.div>
               </AnimatePresence>
-
-              {/* Progress Dots */}
               <div className="flex justify-center gap-3">
                 {poetryExamples.map((_, index) => (
                   <button
@@ -171,10 +157,7 @@ const PoetryDemoSection = () => {
                 ))}
               </div>
             </div>
-
-            {/* Glossy divider line */}
             <div className="w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-
             <div className="space-y-6">
               <div className="flex flex-wrap gap-6 text-sm text-white/60">
                 <div className="flex items-center gap-2">
@@ -193,8 +176,6 @@ const PoetryDemoSection = () => {
             </div>
           </motion.div>
         </div>
-
-        {/* Call to Action */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -211,7 +192,7 @@ const PoetryDemoSection = () => {
         </motion.div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default PoetryDemoSection
+export default PoetryDemoSection;

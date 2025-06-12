@@ -1,6 +1,5 @@
 {
-    "watch": ["pages", "components", "lib"],
-    "ext": "js,jsx,ts,tsx",
-    "exec": "yarn dev"
-  }
-  
+  "watch": ["pages", "components", "lib"],
+  "ext": "js,jsx,ts,tsx",
+  "exec": "npm run dev"
+}

@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 // import { motion } from 'react';
 import { Sparkles } from 'lucide-react';
