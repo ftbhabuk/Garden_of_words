@@ -1,24 +1,27 @@
-import { StreamingTextResponse } from "ai";
-import { OpenAIStream } from "ai";
+// app/api/chat/route.ts
+
+import { NextResponse } from "next/server";
 import OpenAI from "openai";
 import { PromptService } from "@/app/Services/promptService";
 
-// Initialize Groq client
 const groq = new OpenAI({
-  apiKey: process.env.GROQ_API_KEY,
+  apiKey: process.env.GROQ_API_KEY || "",
   baseURL: "https://api.groq.com/openai/v1",
 });
 
 export async function POST(req: Request) {
-  // Parse request body
   const { text, prompt, tags, temperature } = await req.json();
 
   if (!prompt) {
-    return new Response("Prompt is required", { status: 400 });
+    return NextResponse.json({ error: "Prompt is required" }, { status: 400 });
+  }
+
+  if (!process.env.GROQ_API_KEY) {
+    console.error("Missing GROQ_API_KEY");
+    return NextResponse.json({ error: "Server misconfiguration" }, { status: 500 });
   }
 
   try {
-    // Build the prompt using PromptService
     const promptConfig = {
       text,
       prompt,
@@ -29,23 +32,37 @@ export async function POST(req: Request) {
     const finalPrompt = PromptService.buildPrompt(promptConfig);
     const systemMessage = PromptService.getSystemMessage();
 
-    // Create the stream with temperature parameter
-    const response = await groq.chat.completions.create({
+    const completion = await groq.chat.completions.create({
       model: "llama3-8b-8192",
       messages: [
         { role: "system", content: systemMessage },
         { role: "user", content: finalPrompt },
       ],
-      temperature: temperature || 0.7,
+      temperature: promptConfig.temperature,
       stream: true,
     });
 
-    // Convert the OpenAI stream to a ReadableStream
-    const stream = OpenAIStream(response as any);
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream({
+      async start(controller) {
+        for await (const chunk of completion) {
+          const content = chunk.choices?.[0]?.delta?.content;
+          if (content) {
+            controller.enqueue(encoder.encode(content));
+          }
+        }
+        controller.close();
+      },
+    });
 
-    return new StreamingTextResponse(stream);
-  } catch (error) {
-    console.error("Error processing request:", error);
-    return new Response("Error processing request", { status: 500 });
+    return new Response(stream, {
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Transfer-Encoding": "chunked",
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

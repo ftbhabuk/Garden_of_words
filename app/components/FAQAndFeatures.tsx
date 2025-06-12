@@ -50,7 +50,7 @@ export default function FAQSection() {
       {/* Background with subtle stars */}
       <div className="absolute inset-0 z-0">
       <Image
-          src="/tree.webp"
+          src="/image.png"
           alt="Floating fountain pens with holographic effects"
           fill
           className="object-cover"
