@@ -10,7 +10,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative overflow-hidden pt-10"> {/* Added padding at the top */}
+    <footer className="relative overflow-hidden pt-5"> {/* Added padding at the top */}
       <div className="absolute inset-0 bg-gradient-to-r from-gray-100 to-gray-200 opacity-70"></div>
       <div className="absolute inset-0 backdrop-blur-sm"></div>
       {/* <MaxWidthWrapper> */}
@@ -61,9 +61,9 @@ const Footer = () => {
             {/* Right Column */}
             <div className="text-center md:text-right md:mr-4"> {/* Moved to absolute right */}
               <h4 className="text-lg font-medium text-gray-800 mb-4">Join Our Community</h4>
-              <p className="text-sm text-gray-600 mb-4">Ready to showcase your talent?</p>
+              <p className="text-sm text-gray-600 mb-4">Want  to showcase your talent?</p>
               <Link
-                href="#"
+                href="https://poetry-web2.onrender.com/"
                 className="inline-block bg-gray-800 text-white text-sm px-6 py-2 rounded hover:bg-gray-700 transition-colors duration-300"
               >
                 Get Started
@@ -71,19 +71,7 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Footer bottom section */}
-          <div className="mt-6 pt-4 border-t border-gray-200 flex justify-between items-center">
-            <p className="text-sm text-gray-500">
-              &copy; {new Date().getFullYear()} GardenofWords
-            </p>
-            <button
-              onClick={scrollToTop}
-              className="p-2 bg-white rounded-full shadow-sm hover:shadow-md transition-all duration-300 text-gray-600 hover:text-gray-900"
-              aria-label="Scroll to top"
-            >
-              <ArrowUp className="w-4 h-4" />
-            </button>
-          </div>
+          
         </div>
       {/* </MaxWidthWrapper> */}
     </footer>
