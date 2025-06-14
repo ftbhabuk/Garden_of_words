@@ -47,8 +47,8 @@ const PoetryExampleComponent = ({ title, content, author, significance }: Poetry
             className="overflow-hidden"
           >
             <div className="p-4 bg-gray-900/30 rounded-lg mt-2 border border-gray-800">
-              <p className="text-sm italic text-gray-300">"{content}"</p>
-              <p className="text-xs text-gray-500 mt-4">{significance}</p>
+              <p className="text-sm italic text-gray-300 font-sans font-medium leading-relaxed">"{content}"</p>
+              <p className="text-xs text-gray-400 font-sans font-medium leading-relaxed mt-4">{significance}</p>
             </div>
           </motion.div>
         )}
@@ -81,7 +81,7 @@ const HistoricalEraComponent = ({ era, date, description, example, image, index 
           className="h-px bg-gray-600"
         />
         <h2 className="text-3xl font-light text-white">{era}</h2>
-        <p className="text-sm text-gray-500">{date}</p>
+        <p className="text-sm text-gray-400 font-sans font-medium">{date}</p>
         <p className="text-base text-gray-300">{description}</p>
         <PoetryExampleComponent {...example} />
       </div>
@@ -95,7 +95,7 @@ const historicalEras: HistoricalEra[] = [
     date: "Before 3000 BCE",
     description: "Words carved in stone and song, capturing humanity’s first dreams.",
     icon: Book,
-    image: "https://images.unsplash.com/photo-1539353820286-ee9b2f6ee7eb?q=80&w=2648&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Abstract cave art
+    image: "https://images.unsplash.com/photo-1539353820286-ee9b2f6ee7eb?q=80&w=2648&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     example: {
       title: "Gilgamesh’s Quest",
       content: "He who saw the Deep, wise in all matters!",
@@ -108,7 +108,7 @@ const historicalEras: HistoricalEra[] = [
     date: "800 BCE - 500 CE",
     description: "Verses of marble and muse, crafting timeless emotion.",
     icon: Scroll,
-    image: "https://plus.unsplash.com/premium_photo-1736953763940-80e99e1e59d4?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDIwfHx8ZW58MHx8fHx8", // Abstract Greek columns
+    image: "https://plus.unsplash.com/premium_photo-1736953763940-80e99e1e59d4?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDIwfHx8ZW58MHx8fHx8",
     example: {
       title: "Sappho’s Muse",
       content: "He seems equal to gods, listening to your voice.",
@@ -121,7 +121,7 @@ const historicalEras: HistoricalEra[] = [
     date: "500 - 1500 CE",
     description: "Poetry wove cultures, threading universal truths.",
     icon: Globe,
-    image: "https://plus.unsplash.com/premium_photo-1676316337647-65c35c441c9d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDR8fHxlbnwwfHx8fHw%3D", // Abstract silk road
+    image: "https://plus.unsplash.com/premium_photo-1676316337647-65c35c441c9d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDR8fHxlbnwwfHx8fHw%3D",
     example: {
       title: "Moonlit Thoughts",
       content: "Moonlight glows, thoughts drift home.",
@@ -136,7 +136,7 @@ export default function PoetryHistory() {
     <div 
       className="min-h-screen bg-black bg-opacity-80"
       style={{
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0,0,0.4)), url('https://images.unsplash.com/photo-1588415232922-98443619860a?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDMxfHx8ZW58MHx8fHx8')`, // Replace with abstract black-and-white texture
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0,0,0.4)), url('https://images.unsplash.com/photo-1588415232922-98443619860a?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDMxfHx8ZW58MHx8fHx8')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundAttachment: "fixed",
