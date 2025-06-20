@@ -1,34 +1,35 @@
-// pages/PoetryGuide.tsx or app/PoetryGuide.tsx (adjust based on your project structure)
 "use client";
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  PenTool,
-  BookOpen,
   Heart,
   Brain,
-  Sparkles,
-  Music,
   Palette,
+  Music,
+  BookOpen,
   Feather,
+  BookMarked,
   Star,
-  BookMarked, // Corrected from BookMarkad
-  Clock,
   Users,
   Lightbulb,
-  Quote,
   ChevronDown,
+  Ear,
+  Clock,
+  Eye,
+  Moon,
 } from "lucide-react";
 
-// Import the new component
 import MasterTheCraftSection from "./MasterTsection";
 
 type TechniqueCardProps = {
   title: string;
   description: string;
+  tagline: string;
   tips: string[];
   icon: any;
   index: number;
+  imageUrl: string;
 };
 
 type PoetryFormCardProps = {
@@ -38,6 +39,7 @@ type PoetryFormCardProps = {
   author: string;
   icon: any;
   index: number;
+  imageUrl: string;
 };
 
 type ExerciseCardProps = {
@@ -48,78 +50,97 @@ type ExerciseCardProps = {
   duration: string;
   icon: any;
   index: number;
+  imageUrl: string;
 };
 
 const techniques: Array<Omit<TechniqueCardProps, "index">> = [
   {
     title: "Imagery",
     description:
-      "Paint pictures with words that engage the senses and create vivid mental landscapes.",
+      "Transform ordinary moments into extraordinary experiences through vivid, sensory language that allows readers to see, hear, feel, and taste your words.",
+    tagline: "Paint with words",
     icon: Palette,
+    imageUrl:
+      "https://plus.unsplash.com/premium_photo-1747851905755-c8dad9d3fe24?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8NDZ8emFfUHFOdWNIX2t8fGVufDB8fHx8fA%3D%3D",
     tips: [
-      "Use specific, concrete details that readers can visualize",
-      "Appeal to multiple senses: sight, sound, touch, taste, smell",
-      "Choose vivid, unexpected comparisons that surprise readers",
-      "Create memorable scenes through careful observation",
+      "Use specific, concrete details over abstract concepts",
+      "Appeal to multiple senses, not just sight",
+      "Create unexpected but meaningful comparisons",
+      "Show scenes that linger in memory",
     ],
   },
   {
     title: "Sound & Rhythm",
     description:
-      "Create musical patterns that enhance meaning and guide the reader's experience.",
+      "Craft the musical heartbeat of your poetry through deliberate sound patterns, rhythm variations, and the natural flow of language that guides your reader's journey.",
+    tagline: "Music in motion",
     icon: Music,
+    imageUrl:
+      "https://plus.unsplash.com/premium_photo-1747852026439-b159abd44ee2?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8NTV8emFfUHFOdWNIX2t8fGVufDB8fHx8fA%3D%3D",
     tips: [
-      "Experiment with alliteration and consonance for emphasis",
-      "Use assonance to create internal rhymes and melody",
-      "Vary line lengths and rhythms to control pacing",
-      "Master the natural cadence of spoken language",
+      "Experiment with alliteration and consonance for texture",
+      "Use internal rhyme and assonance for melody",
+      "Vary line lengths to control pacing and breath",
+      "Listen for the natural cadence in spoken words",
     ],
   },
   {
     title: "Metaphor & Symbolism",
     description:
-      "Use figurative language to deepen meaning and create layers of interpretation.",
+      "Layer your poetry with deeper meaning through carefully chosen comparisons and symbols that resonate beyond their literal surface, creating rich interpretive possibilities.",
+    tagline: "Layers of meaning",
     icon: Brain,
+    imageUrl:
+      "https://plus.unsplash.com/premium_photo-1728581260001-0aa21b1ea6b1?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDY5fHx8ZW58MHx8fHx8",
     tips: [
-      "Create fresh comparisons that surprise and illuminate",
-      "Develop extended metaphors throughout a poem",
-      "Choose symbols that resonate with universal meaning",
-      "Layer multiple levels of interpretation",
+      "Develop fresh comparisons that surprise yet feel inevitable",
+      "Build extended metaphors that sustain throughout the poem",
+      "Choose symbols that carry personal and universal weight",
+      "Allow multiple interpretations without losing focus",
     ],
   },
   {
     title: "Emotional Truth",
     description:
-      "Connect with readers through authentic expression and genuine vulnerability.",
+      "Connect authentically with your readers by excavating genuine emotions and expressing them with precision, vulnerability, and universal resonance that transcends personal experience.",
+    tagline: "Authentic connection",
     icon: Heart,
+    imageUrl:
+      "https://images.unsplash.com/photo-1740448374472-1cb706feb965?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxNzB8fHxlbnwwfHx8fHw%3D",
     tips: [
-      "Draw from personal experiences and observations",
-      "Express complex emotions with precision and nuance",
-      "Find universal themes in specific moments",
-      "Stay vulnerable while maintaining artistic control",
+      "Mine your personal experiences for universal truths",
+      "Express complex emotions with surgical precision",
+      "Find the specific details that unlock broader themes",
+      "Balance vulnerability with artistic control and purpose",
     ],
   },
   {
     title: "Structure & Form",
     description:
-      "Shape your poems with purposeful design that serves your artistic vision.",
+      "Shape your poems with intentional architectural choices that serve your content, whether embracing traditional constraints or forging innovative structures that enhance meaning.",
+    tagline: "Purposeful design",
     icon: BookMarked,
+    imageUrl:
+      "https://plus.unsplash.com/premium_photo-1747851905755-c8dad9d3fe24?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8NDZ8emFfUHFOdWNIX2t8fGVufDB8fHx8fA%3D%3D",
     tips: [
-      "Choose forms that complement your content",
-      "Use line breaks and stanza breaks meaningfully",
-      "Experiment with traditional and free verse forms",
-      "Create tension between form and content",
+      "Select forms that complement your subject matter",
+      "Use line breaks and stanza breaks with intention",
+      "Experiment with hybrid forms and variations",
+      "Create productive tension between form and content",
     ],
   },
   {
     title: "Voice & Perspective",
     description:
-      "Develop your unique poetic voice that resonates with authenticity.",
+      "Cultivate your distinctive poetic voice through consistent stylistic choices while remaining flexible enough to serve each poem's unique needs and emotional landscape.",
+    tagline: "Your unique voice",
     icon: Users,
+    imageUrl:
+      "https://plus.unsplash.com/premium_photo-1747852026439-b159abd44ee2?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8NTV8emFfUHFOdWNIX2t8fGVufDB8fHx8fA%3D%3D",
     tips: [
-      "Find your authentic writing voice",
-      "Experiment with different personas",
-      "Balance consistency with variation",
+      "Develop authentic expression that feels genuinely yours",
+      "Experiment with different personas and speakers",
+      "Balance consistency with adaptability across poems",
       "Consider the relationship between speaker and subject",
     ],
   },
@@ -130,9 +151,11 @@ const poetryForms: Array<Omit<PoetryFormCardProps, "index">> = [
     title: "Haiku",
     description:
       "Japanese form focusing on nature and moments in time. Three lines capturing a single moment.",
-    example: "Morning frost glitters\nOn spider webs stretched between\nBare autumn branches",
+    example:
+      "Morning frost glitters\nOn spider webs stretched between\nBare autumn branches",
     author: "Traditional Form",
     icon: BookMarked,
+    imageUrl: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570",
   },
   {
     title: "Sonnet",
@@ -142,6 +165,7 @@ const poetryForms: Array<Omit<PoetryFormCardProps, "index">> = [
       "Shall I compare thee to a summer's day?\nThou art more lovely and more temperate...",
     author: "William Shakespeare",
     icon: Star,
+    imageUrl: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570",
   },
   {
     title: "Free Verse",
@@ -151,111 +175,111 @@ const poetryForms: Array<Omit<PoetryFormCardProps, "index">> = [
       "The red wheelbarrow\nglazed with rain\nwater\nbeside the white\nchickens",
     author: "William Carlos Williams",
     icon: Feather,
+    imageUrl: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570",
   },
 ];
 
 const exercises: Array<Omit<ExerciseCardProps, "index">> = [
   {
-    title: "Object Study",
+    title: "Whispered Secrets",
     description:
-      "Transform the ordinary into extraordinary through focused observation.",
+      "Discover the hidden stories that objects hold within their silent existence.",
     prompt:
-      "Choose an everyday object and write about it for 10 minutes without stopping. Focus on its texture, weight, history, and emotional resonance.",
+      "Choose an antique or weathered item. Write a poem from its perspective, revealing three secrets it has witnessed across decades. Let each secret unfold through different seasons of its life.",
     difficulty: "Beginner",
-    duration: "10 minutes",
-    icon: Lightbulb,
+    duration: "12 minutes",
+    icon: Eye,
+    imageUrl: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570",
   },
   {
-    title: "Memory Fragment",
+    title: "Midnight Soliloquy",
     description:
-      "Capture a fleeting moment from your past with vivid detail.",
+      "Explore the profound thoughts that emerge in solitude's embrace.",
     prompt:
-      "Write about a memory that lasts only 30 seconds. Focus on sensory details and the emotions of that brief moment.",
+      "Write a conversation between yourself and the moon at 3 AM. What questions would you ask? What wisdom might it share? Let the dialogue reveal something unexpected about your inner world.",
     difficulty: "Intermediate",
-    duration: "15 minutes",
-    icon: Clock,
+    duration: "18 minutes",
+    icon: Moon,
+    imageUrl: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570",
   },
   {
-    title: "Voice Experiment",
+    title: "Synesthetic Symphony",
     description:
-      "Explore different perspectives and personas in your writing.",
+      "Blend your senses to create poetry that transcends ordinary perception.",
     prompt:
-      "Write the same event from three different viewpoints: a child, an elder, and an inanimate object present at the scene.",
+      "Write a piece where colors have sounds, textures have flavors, and emotions have temperatures. Describe a simple moment—like drinking coffee or watching rain—through this heightened sensory lens.",
     difficulty: "Advanced",
-    duration: "25 minutes",
-    icon: Users,
+    duration: "20 minutes",
+    icon: Ear,
+    imageUrl: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570",
   },
 ];
 
 const TechniqueCard: React.FC<TechniqueCardProps> = ({
   title,
   description,
+  tagline,
   tips,
   icon: Icon,
   index,
+  imageUrl,
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const isImageLeft = index % 2 === 0;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      viewport={{ once: true }}
-      className="bg-gray-900/50 backdrop-blur-sm p-6 rounded-lg hover:bg-gray-800/50 transition-all duration-300"
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true, amount: 0.3 }}
+      className="relative w-screen h-screen overflow-hidden"
     >
-      <div className="flex items-start gap-4 mb-4">
-        <div className="p-2 bg-gray-800 rounded-lg shrink-0">
-          <Icon className="w-5 h-5 text-gray-400" />
-        </div>
-        <div className="flex-1">
-          <h3 className="text-lg font-medium text-white mb-2">{title}</h3>
-          <p className="text-gray-400 text-sm leading-relaxed">
-            {description}
-          </p>
-        </div>
+      {/* Full Screen Background Image with Extra Coverage */}
+      <div className="absolute inset-0 w-full h-full">
+        <div
+          className="absolute inset-0 bg-cover bg-center w-full h-full scale-110"
+          style={{
+            backgroundImage: `url(${imageUrl})`,
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/20 to-black/70" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60" />
       </div>
 
-      <button
-        onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full text-left flex items-center justify-between p-3 bg-gray-800/50 rounded-lg hover:bg-gray-700/50 transition-all duration-200"
-      >
-        <span className="text-sm text-gray-300">View Techniques</span>
-        <ChevronDown
-          className={`w-4 h-4 text-gray-400 transition-transform ${
-            isExpanded ? "rotate-180" : ""
-          }`}
-        />
-      </button>
-
-      <AnimatePresence>
-        {isExpanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="overflow-hidden"
+      <div className="relative z-10 w-full h-full flex items-center justify-center px-6">
+        <div className="max-w-7xl mx-auto w-full relative">
+          <div
+            className={`flex flex-col ${isImageLeft ? "md:flex-row" : "md:flex-row-reverse"} items-center gap-16`}
           >
-            <div className="mt-3 space-y-3">
-              {tips.map((tip, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: i * 0.1 }}
-                  className="flex items-start gap-3 p-3 bg-gray-900/30 rounded-lg"
-                >
-                  <div className="w-1 h-1 rounded-full bg-gray-500 mt-2 shrink-0" />
-                  <span className="text-sm text-gray-300 leading-relaxed">
-                    {tip}
-                  </span>
-                </motion.div>
-              ))}
+            <div className="w-full md:w-1/2 relative">
+              <div className="absolute top-0 left-0 md:-top-8 md:-left-8">
+                <h3 className="text-4xl md:text-5xl lg:text-6xl font-thin text-white/90 tracking-wider italic transform -rotate-3">
+                  {tagline}
+                </h3>
+                <div className="w-32 h-px bg-white/30 mt-4 ml-8"></div>
+              </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <div className="w-full md:w-1/2 flex flex-col justify-center space-y-8 relative">
+              <p className="text-white/80 text-base md:text-lg leading-relaxed font-light max-w-md mt-16 md:mt-0">
+                {description}
+              </p>
+              <div className="space-y-2">
+                <h4 className="text-2xl md:text-3xl font-light text-white/70 tracking-wide">
+                  {title}
+                </h4>
+                <div className="w-24 h-px bg-white/40"></div>
+              </div>
+              <div className="absolute bottom-0 right-0 md:-bottom-32 md:-right-12 max-w-sm">
+                <p className="text-xs md:text-sm text-white/50 font-light italic leading-relaxed">
+                  Master this technique to add depth and resonance to every line
+                  you write.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </motion.div>
   );
 };
@@ -267,28 +291,31 @@ const PoetryFormCard: React.FC<PoetryFormCardProps> = ({
   author,
   icon: Icon,
   index,
+  imageUrl,
 }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      viewport={{ once: true }}
-      className="bg-gray-900/50 backdrop-blur-sm p-6 rounded-lg"
+      viewport={{ once: true, amount: 0.3 }}
+      className="group bg-white/80 backdrop-blur-sm rounded-lg border border-gray-300 p-6 hover:bg-white hover:border-gray-400 transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full shadow-lg hover:shadow-xl"
     >
       <div className="flex items-center gap-3 mb-4">
-        <Icon className="w-5 h-5 text-gray-400" />
-        <h4 className="text-lg font-medium text-white">{title}</h4>
+        <Icon className="w-5 h-5 text-gray-800" />
+        <h4 className="text-lg font-medium text-gray-900 tracking-wide">
+          {title}
+        </h4>
       </div>
-      <p className="text-gray-400 text-sm mb-4 leading-relaxed">
+      <p className="text-gray-700 text-sm mb-4 leading-relaxed flex-grow font-light">
         {description}
       </p>
-      <div className="bg-gray-800/50 p-4 rounded-lg mb-3">
-        <p className="text-gray-300 italic font-serif text-sm leading-relaxed whitespace-pre-line">
-          {example}
+      <div className="bg-gray-100/80 backdrop-blur-sm p-4 rounded-lg mb-4 border border-gray-200">
+        <p className="text-gray-800 italic font-light text-sm leading-relaxed whitespace-pre-line">
+          "{example}"
         </p>
       </div>
-      <p className="text-right text-xs text-gray-500">— {author}</p>
+      <p className="text-right text-xs text-gray-500 font-light">— {author}</p>
     </motion.div>
   );
 };
@@ -301,159 +328,172 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
   duration,
   icon: Icon,
   index,
+  imageUrl,
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      viewport={{ once: true }}
-      className="bg-gray-900/50 backdrop-blur-sm p-6 rounded-lg"
+      viewport={{ once: true, amount: 0.3 }}
+      className="group bg-gray-900/80 backdrop-blur-sm rounded-lg border border-gray-600 p-6 hover:bg-gray-800/90 hover:border-gray-500 transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full shadow-lg hover:shadow-xl"
     >
-      <div className="flex items-center gap-3 mb-3">
-        <Icon className="w-5 h-5 text-gray-400" />
-        <h4 className="text-lg font-medium text-white">{title}</h4>
+      <div className="flex items-center gap-3 mb-4">
+        <Icon className="w-5 h-5 text-gray-300" />
+        <h4 className="text-lg font-medium text-gray-100 tracking-wide">
+          {title}
+        </h4>
       </div>
-      <p className="text-gray-400 text-sm mb-4 leading-relaxed">
+      <p className="text-gray-300 text-sm mb-6 leading-relaxed font-light">
         {description}
       </p>
-
-      <div className="flex items-center gap-4 mb-4">
-        <span className="text-xs text-gray-500 bg-gray-800 px-2 py-1 rounded">
+      <div className="flex items-center gap-3 mb-6">
+        <span className="text-xs font-light text-gray-300 bg-gray-700/60 backdrop-blur-sm px-3 py-1 rounded-full border border-gray-600">
           {difficulty}
         </span>
-        <span className="text-xs text-gray-500 bg-gray-800 px-2 py-1 rounded">
+        <span className="text-xs font-light text-gray-300 bg-gray-700/60 backdrop-blur-sm px-3 py-1 rounded-full border border-gray-600">
           {duration}
         </span>
       </div>
-
-      <button
-        onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full text-left flex items-center justify-between p-3 bg-gray-800/50 rounded-lg hover:bg-gray-700/50 transition-all duration-200"
-      >
-        <span className="text-sm text-gray-300">View Prompt</span>
-        <ChevronDown
-          className={`w-4 h-4 text-gray-400 transition-transform ${
-            isExpanded ? "rotate-180" : ""
-          }`}
-        />
-      </button>
-
-      <AnimatePresence>
-        {isExpanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="overflow-hidden"
-          >
-            <div className="mt-3 p-4 bg-gray-900/30 rounded-lg">
-              <p className="text-sm text-gray-300 leading-relaxed">
-                {prompt}
-              </p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div className="mt-auto p-4 bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-600/50">
+        <p className="text-sm text-gray-200 leading-relaxed font-light italic">
+          {prompt}
+        </p>
+      </div>
     </motion.div>
   );
 };
 
 export default function PoetryGuide() {
   return (
-    <div className="min-h-screen relative bg-gray-900">
-      {/* Render the MasterTheCraftSection component here */}
+    <div className="w-screen overflow-x-hidden bg-black">
       <MasterTheCraftSection />
 
-      <section className="relative z-10 py-20 px-4 sm:px-8">
-        <div className="max-w-6xl mx-auto">
-          {/* Removed the Master the Craft section from here */}
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="mb-16"
-          >
-            <motion.div
-              initial={{ width: 0 }}
-              whileInView={{ width: "60px" }}
-              transition={{ duration: 0.6 }}
-              className="h-px bg-gray-600 mb-6"
+      {/* Essential Techniques Section - Full Viewport Coverage */}
+      <section className="relative w-screen overflow-hidden">
+        {/* Section Header */}
+        <div className="w-screen h-screen flex items-center justify-center bg-black relative overflow-hidden">
+          {/* Background with same treatment */}
+          <div className="absolute inset-0 w-full h-full">
+            <div
+              className="absolute inset-0 bg-cover bg-center w-full h-full scale-110"
+              style={{
+                backgroundImage: `url('https://images.unsplash.com/photo-1516246830500-1fdf4d7be155?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`,
+              }}
             />
-            <h3 className="text-2xl font-light text-white mb-3">
-              Essential Techniques
-            </h3>
-            <p className="text-gray-400 max-w-2xl mb-10 font-light">
-              Master these fundamental elements to craft powerful and moving
-              poetry.
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 gap-6 mb-20">
-            {techniques.map((technique, index) => (
-              <TechniqueCard key={technique.title} {...technique} index={index} />
-            ))}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/20 to-black/70" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40" />
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60" />
           </div>
 
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="mb-16"
+            className="relative z-10 text-center px-6"
           >
-            <motion.div
-              initial={{ width: 0 }}
-              whileInView={{ width: "60px" }}
-              transition={{ duration: 0.6 }}
-              className="h-px bg-gray-600 mb-6"
-            />
-            <h3 className="text-2xl font-light text-white mb-3">
-              Classical Forms
-            </h3>
-            <p className="text-gray-400 max-w-2xl mb-10 font-light">
-              Explore traditional poetic structures that have stood the test of
-              time.
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-thin text-white mb-6 tracking-tight">
+              Crafting <span className="text-white/70">Masterpieces</span>
+            </h2>
+            <p className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto font-thin leading-relaxed tracking-wide">
+              Foundational elements that breathe life into your verse
             </p>
           </motion.div>
+        </div>
 
-          <div className="grid md:grid-cols-3 gap-6 mb-20">
-            {poetryForms.map((form, index) => (
-              <PoetryFormCard key={form.title} {...form} index={index} />
-            ))}
+        {/* Techniques - Full Screen Each */}
+        <div className="w-screen">
+          {techniques.map((technique, index) => (
+            <TechniqueCard {...technique} index={index} key={index} />
+          ))}
+        </div>
+
+        {/* Classical Forms Section - Minimalist B/W Theme */}
+        <div className="w-screen py-20 bg-gray-50 relative overflow-hidden">
+          {/* Subtle paper texture background */}
+          <div className="absolute inset-0 w-full h-full">
+            <div
+              className="absolute inset-0 bg-cover bg-center w-full h-full opacity-10"
+              style={{
+                backgroundImage: `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23000" opacity="0.2"/><circle cx="75" cy="75" r="1" fill="%23000" opacity="0.2"/><circle cx="50" cy="10" r="0.5" fill="%23000" opacity="0.1"/><circle cx="20" cy="80" r="0.5" fill="%23000" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>')`,
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-gray-100/50 via-white/80 to-gray-50/50" />
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="mb-16"
-          >
+          <div className="relative z-10 max-w-6xl mx-auto px-6">
             <motion.div
-              initial={{ width: 0 }}
-              whileInView={{ width: "60px" }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="h-px bg-gray-600 mb-6"
-            />
-            <h3 className="text-2xl font-light text-white mb-3">
-              Writing Exercises
-            </h3>
-            <p className="text-gray-400 max-w-2xl mb-10 font-light">
-              Put theory into practice with these creative exercises designed to
-              spark inspiration.
-            </p>
-          </motion.div>
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-light text-black mb-4 tracking-tight">
+                Timeless Structures
+              </h2>
+              <div className="w-16 h-px bg-black mx-auto mb-6"></div>
+              <p className="text-base text-gray-700 max-w-2xl mx-auto font-light leading-relaxed">
+                Classical forms that have shaped poetry through the ages
+              </p>
+            </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {exercises.map((exercise, index) => (
-              <ExerciseCard key={exercise.title} {...exercise} index={index} />
-            ))}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              {poetryForms.map((form, index) => (
+                <PoetryFormCard {...form} index={index} key={index} />
+              ))}
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Writing Exercises Section - Elegant Dark Theme */}
+        <div className="w-screen py-20 bg-gray-100 relative overflow-hidden">
+          {/* Sophisticated paper texture background */}
+          <div className="absolute inset-0 w-full h-full">
+            <div
+              className="absolute inset-0 bg-cover bg-center w-full h-full opacity-15"
+              style={{
+                backgroundImage: `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><defs><pattern id="elegant" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M20 20h60v60h-60z" fill="none" stroke="%23000" stroke-width="0.3" opacity="0.1"/><circle cx="50" cy="50" r="2" fill="%23000" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23elegant)"/></svg>')`,
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-gray-200/30 via-gray-100/60 to-gray-50/40" />
+          </div>
+
+          <div className="relative z-10 max-w-6xl mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-light text-gray-800 mb-4 tracking-tight">
+                Ignite Your Creativity
+              </h2>
+              <div className="w-16 h-px bg-gray-700 mx-auto mb-6"></div>
+              <p className="text-base text-gray-600 max-w-2xl mx-auto font-light leading-relaxed">
+                Transformative exercises to awaken your inner poet
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-start"
+            >
+              {exercises.map((exercise, index) => (
+                <ExerciseCard {...exercise} index={index} key={index} />
+              ))}
+            </motion.div>
           </div>
         </div>
       </section>
