@@ -1,17 +1,15 @@
-// components/MasterTheCraftSection.tsx
 "use client";
-import React from "react";
 import { motion } from "framer-motion";
 
 export default function MasterTheCraftSection() {
   return (
-    <div className="relative -mx-4 sm:-mx-8">
-      {/* Background Image */}
-      <div className="absolute inset-0">
+    <div className="relative w-screen h-screen overflow-hidden">
+      {/* Background Image - Full Viewport Coverage */}
+      <div className="absolute inset-0 w-full h-full">
         <div
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover bg-center w-full h-full scale-110"
           style={{
-            backgroundImage: `url('/red.webp')`, // Make sure this path is correct
+            backgroundImage: `url('oggy.jpg')`,
           }}
         />
         {/* Elegant overlay gradients */}
@@ -25,19 +23,13 @@ export default function MasterTheCraftSection() {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
-        className="min-h-screen flex items-center justify-center text-center relative z-10 px-4 sm:px-8"
+        className="relative z-10 w-full h-full flex items-center justify-center text-center px-6"
       >
-        <div>
-          <motion.div
-            initial={{ width: 0 }}
-            whileInView={{ width: "80px" }}
-            transition={{ duration: 0.6 }}
-            className="h-px bg-gray-600 mx-auto mb-8"
-          />
-          <h2 className="text-4xl sm:text-5xl font-light text-white mb-6 tracking-tight">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-thin text-white mb-6 tracking-tight">
             Master the Craft
           </h2>
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed font-light">
+          <p className="text-lg md:text-xl text-white/70 font-thin tracking-wide max-w-3xl mx-auto leading-relaxed">
             Develop your poetic voice through essential techniques, guided
             practice, and timeless wisdom.
           </p>
