@@ -234,7 +234,7 @@ const TechniqueCard: React.FC<TechniqueCardProps> = ({
       viewport={{ once: true, amount: 0.3 }}
       className="relative w-screen h-screen overflow-hidden"
     >
-      {/* Full Screen Background Image with Extra Coverage */}
+      {/* Full Screen Background Image with Extra Coverage - KEEPING EXACT SAME SIZING */}
       <div className="absolute inset-0 w-full h-full">
         <div
           className="absolute inset-0 bg-cover bg-center w-full h-full scale-110"
@@ -254,24 +254,25 @@ const TechniqueCard: React.FC<TechniqueCardProps> = ({
           >
             <div className="w-full md:w-1/2 relative">
               <div className="absolute top-0 left-0 md:-top-8 md:-left-8">
-                <h3 className="text-4xl md:text-5xl lg:text-6xl font-thin text-white/90 tracking-wider italic transform -rotate-3">
+                <h3 className="text-4xl md:text-5xl lg:text-6xl font-thin text-white/90 tracking-wider italic">
                   {tagline}
                 </h3>
-                <div className="w-32 h-px bg-white/30 mt-4 ml-8"></div>
+                <div className="w-80 h-px bg-white/30 mt-4"></div>
               </div>
             </div>
-            <div className="w-full md:w-1/2 flex flex-col justify-center space-y-8 relative">
-              <p className="text-white/80 text-base md:text-lg leading-relaxed font-light max-w-md mt-16 md:mt-0">
+            <div className="w-full md:w-1/2 flex flex-col justify-center space-y-6 relative">
+              <p className="text-white/80 text-lg md:text-xl leading-relaxed font-light max-w-md mt-8 md:mt-0">
                 {description}
               </p>
               <div className="space-y-2">
-                <h4 className="text-2xl md:text-3xl font-light text-white/70 tracking-wide">
+                <h4 className="text-4xl md:text-5xl font-bold text-white/70 tracking-wide">
                   {title}
                 </h4>
                 <div className="w-24 h-px bg-white/40"></div>
               </div>
-              <div className="absolute bottom-0 right-0 md:-bottom-32 md:-right-12 max-w-sm">
-                <p className="text-xs md:text-sm text-white/50 font-light italic leading-relaxed">
+              <div className="absolute bottom-0 right-0 md:-bottom-20 md:right-0 max-w-sm">
+                <div className="w-20 h-px bg-white/30 mb-3 ml-auto"></div>
+                <p className="text-sm md:text-lg text-white/50 font-light italic leading-relaxed">
                   Master this technique to add depth and resonance to every line
                   you write.
                 </p>
