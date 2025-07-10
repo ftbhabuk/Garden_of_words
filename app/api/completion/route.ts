@@ -1,13 +1,7 @@
-// app/api/chat/route.ts
-
 import { NextResponse } from "next/server";
-import OpenAI from "openai";
 import { PromptService } from "@/app/Services/promptService";
-
-const groq = new OpenAI({
-  apiKey: process.env.GROQ_API_KEY || "",
-  baseURL: "https://api.groq.com/openai/v1",
-});
+import { streamText } from 'ai';
+import { groq } from '@ai-sdk/groq';
 
 export async function POST(req: Request) {
   const { text, prompt, tags, temperature } = await req.json();
@@ -32,35 +26,16 @@ export async function POST(req: Request) {
     const finalPrompt = PromptService.buildPrompt(promptConfig);
     const systemMessage = PromptService.getSystemMessage();
 
-    const completion = await groq.chat.completions.create({
-      model: "llama3-8b-8192",
+    const result = streamText({
+      model: groq('llama3-8b-8192'),
+      system: systemMessage,
       messages: [
-        { role: "system", content: systemMessage },
         { role: "user", content: finalPrompt },
       ],
       temperature: promptConfig.temperature,
-      stream: true,
     });
 
-    const encoder = new TextEncoder();
-    const stream = new ReadableStream({
-      async start(controller) {
-        for await (const chunk of completion) {
-          const content = chunk.choices?.[0]?.delta?.content;
-          if (content) {
-            controller.enqueue(encoder.encode(content));
-          }
-        }
-        controller.close();
-      },
-    });
-
-    return new Response(stream, {
-      headers: {
-        "Content-Type": "text/plain; charset=utf-8",
-        "Transfer-Encoding": "chunked",
-      },
-    });
+    return result.toDataStreamResponse();
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

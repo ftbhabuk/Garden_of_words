@@ -74,7 +74,16 @@ export interface PromptConfig {
 }
 
 export class PromptService {
-  private static readonly DEFAULT_SYSTEM_MESSAGE = `You are an experienced poet specializing in various poetic forms and styles...`;
+  private static readonly DEFAULT_SYSTEM_MESSAGE = `You are a poetry generator. Follow these rules strictly:
+
+  1. Output ONLY the poem - no explanations, no "Here's your poem:", no commentary
+  2. Follow the specified form, style, and tone exactly
+  3. If modifying existing text, preserve the original meaning while applying the requested changes
+  4. Never add introductory or concluding remarks
+  5. Never explain your choices or process
+  6. Never add any other text or comments temperature and system prompts information..
+  
+  Return only the poetry itself.`;
 
   static buildPrompt(config: PromptConfig): string {
     const { text, prompt, selectedTags, temperature = 0.7 } = config;
