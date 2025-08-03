@@ -78,7 +78,7 @@ const PoetryDemoSection = () => {
                 loop
                 muted
                 playsInline
-                poster="/video-poster.jpg" // Optional: add a poster image
+                // poster="/video-poster.jpg" // Optional: add a poster image
               >
                 {/* <source src="/final-demo.mkv" type="video/x-matroska" /> */}
                 <source src="/final-demo-clean.mp4" type="video/mp4" />
