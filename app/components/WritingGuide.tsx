@@ -61,7 +61,8 @@ const techniques: Array<Omit<TechniqueCardProps, "index">> = [
     tagline: "Paint with words",
     icon: Palette,
     imageUrl:
-      "https://plus.unsplash.com/premium_photo-1747851905755-c8dad9d3fe24?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8NDZ8emFfUHFOdWNIX2t8fGVufDB8fHx8fA%3D%3D",
+      "https://pbs.twimg.com/media/Gv_XArzXcAAojyo?format=jpg&name=medium",
+      // need to have gradeint overaly over image to make it look more darker for image plus blurred or faded edges
     tips: [
       "Use specific, concrete details over abstract concepts",
       "Appeal to multiple senses, not just sight",
@@ -91,7 +92,7 @@ const techniques: Array<Omit<TechniqueCardProps, "index">> = [
     tagline: "Layers of meaning",
     icon: Brain,
     imageUrl:
-      "https://plus.unsplash.com/premium_photo-1728581260001-0aa21b1ea6b1?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDY5fHx8ZW58MHx8fHx8",
+      "https://pbs.twimg.com/media/GxOyXlebcAA5QXb?format=jpg&name=4096x4096",
     tips: [
       "Develop fresh comparisons that surprise yet feel inevitable",
       "Build extended metaphors that sustain throughout the poem",
@@ -234,7 +235,7 @@ const TechniqueCard: React.FC<TechniqueCardProps> = ({
       viewport={{ once: true, amount: 0.3 }}
       className="relative w-screen h-screen overflow-hidden"
     >
-      {/* Full Screen Background Image with Extra Coverage - KEEPING EXACT SAME SIZING */}
+      {/* Simple Background Image with Minimal Overlay */}
       <div className="absolute inset-0 w-full h-full">
         <div
           className="absolute inset-0 bg-cover bg-center w-full h-full scale-110"
@@ -242,9 +243,9 @@ const TechniqueCard: React.FC<TechniqueCardProps> = ({
             backgroundImage: `url(${imageUrl})`,
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/20 to-black/70" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60" />
+        
+        {/* Slightly darker overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/35" />
       </div>
 
       <div className="relative z-10 w-full h-full flex items-center justify-center px-6">
@@ -253,7 +254,7 @@ const TechniqueCard: React.FC<TechniqueCardProps> = ({
             className={`flex flex-col ${isImageLeft ? "md:flex-row" : "md:flex-row-reverse"} items-center gap-16`}
           >
             <div className="w-full md:w-1/2 relative">
-              <div className="absolute top-0 left-0 md:-top-8 md:-left-8">
+              <div className="absolute top-0 left-0 md:-top-8 md:left-8">
                 <h3 className="text-4xl md:text-5xl lg:text-6xl font-thin text-white/90 tracking-wider italic">
                   {tagline}
                 </h3>
@@ -261,9 +262,9 @@ const TechniqueCard: React.FC<TechniqueCardProps> = ({
               </div>
             </div>
             <div className="w-full md:w-1/2 flex flex-col justify-center space-y-6 relative">
-              <p className="text-white/80 text-lg md:text-xl leading-relaxed font-light max-w-md mt-8 md:mt-0">
-                {description}
-              </p>
+            <p className="text-white/80 text-lg md:text-xl leading-relaxed font-light max-w-md mt-4 mr-10">
+  {description}
+</p>
               <div className="space-y-2">
                 <h4 className="text-4xl md:text-5xl font-bold text-white/70 tracking-wide">
                   {title}
@@ -277,6 +278,31 @@ const TechniqueCard: React.FC<TechniqueCardProps> = ({
                   you write.
                 </p>
               </div>
+              
+              {/* Tips section - positioned to not block content */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+                className="absolute top-10 right-10 max-w-xs"
+              >
+                <div className="bg-black/60 backdrop-blur-sm border border-white/30 rounded-lg p-4">
+                  <h5 className="text-white font-medium mb-3 text-sm uppercase tracking-wider">
+                    Key Tips
+                  </h5>
+                  <ul className="space-y-2">
+                    {tips.map((tip, tipIndex) => (
+                      <li
+                        key={tipIndex}
+                        className="text-white/90 text-xs leading-relaxed font-light"
+                      >
+                        • {tip}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </motion.div>
             </div>
           </div>
         </div>
@@ -337,27 +363,27 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
       viewport={{ once: true, amount: 0.3 }}
-      className="group bg-gray-900/80 backdrop-blur-sm rounded-lg border border-gray-600 p-6 hover:bg-gray-800/90 hover:border-gray-500 transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full shadow-lg hover:shadow-xl"
+      className="group bg-white/80 backdrop-blur-sm rounded-lg border border-gray-300 p-6 hover:bg-white hover:border-gray-400 transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full shadow-lg hover:shadow-xl"
     >
       <div className="flex items-center gap-3 mb-4">
-        <Icon className="w-5 h-5 text-gray-300" />
-        <h4 className="text-lg font-medium text-gray-100 tracking-wide">
+        <Icon className="w-5 h-5 text-gray-800" />
+        <h4 className="text-lg font-medium text-gray-900 tracking-wide">
           {title}
         </h4>
       </div>
-      <p className="text-gray-300 text-sm mb-6 leading-relaxed font-light">
+      <p className="text-gray-700 text-sm mb-6 leading-relaxed font-light">
         {description}
       </p>
       <div className="flex items-center gap-3 mb-6">
-        <span className="text-xs font-light text-gray-300 bg-gray-700/60 backdrop-blur-sm px-3 py-1 rounded-full border border-gray-600">
+        <span className="text-xs font-light text-gray-700 bg-gray-100/80 backdrop-blur-sm px-3 py-1 rounded-full border border-gray-300">
           {difficulty}
         </span>
-        <span className="text-xs font-light text-gray-300 bg-gray-700/60 backdrop-blur-sm px-3 py-1 rounded-full border border-gray-600">
+        <span className="text-xs font-light text-gray-700 bg-gray-100/80 backdrop-blur-sm px-3 py-1 rounded-full border border-gray-300">
           {duration}
         </span>
       </div>
-      <div className="mt-auto p-4 bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-600/50">
-        <p className="text-sm text-gray-200 leading-relaxed font-light italic">
+      <div className="mt-auto p-4 bg-gray-100/80 backdrop-blur-sm rounded-lg border border-gray-200">
+        <p className="text-sm text-gray-800 leading-relaxed font-light italic">
           {prompt}
         </p>
       </div>
@@ -374,7 +400,7 @@ export default function PoetryGuide() {
       <section className="relative w-screen overflow-hidden">
         {/* Section Header */}
         <div className="w-screen h-screen flex items-center justify-center bg-black relative overflow-hidden">
-          {/* Background with same treatment */}
+          {/* Simple background */}
           <div className="absolute inset-0 w-full h-full">
             <div
               className="absolute inset-0 bg-cover bg-center w-full h-full scale-110"
@@ -382,9 +408,7 @@ export default function PoetryGuide() {
                 backgroundImage: `url('https://images.unsplash.com/photo-1516246830500-1fdf4d7be155?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`,
               }}
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/20 to-black/70" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40" />
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60" />
+            <div className="absolute inset-0 bg-black/20" />
           </div>
 
           <motion.div
@@ -454,17 +478,17 @@ export default function PoetryGuide() {
           </div>
         </div>
 
-        {/* Writing Exercises Section - Elegant Dark Theme */}
-        <div className="w-screen py-20 bg-gray-100 relative overflow-hidden">
-          {/* Sophisticated paper texture background */}
+        {/* Writing Exercises Section - Elegant White Theme */}
+        <div className="w-screen py-20 bg-gray-50 relative overflow-hidden">
+          {/* Subtle paper texture background */}
           <div className="absolute inset-0 w-full h-full">
             <div
-              className="absolute inset-0 bg-cover bg-center w-full h-full opacity-15"
+              className="absolute inset-0 bg-cover bg-center w-full h-full opacity-10"
               style={{
-                backgroundImage: `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><defs><pattern id="elegant" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M20 20h60v60h-60z" fill="none" stroke="%23000" stroke-width="0.3" opacity="0.1"/><circle cx="50" cy="50" r="2" fill="%23000" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23elegant)"/></svg>')`,
+                backgroundImage: `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23000" opacity="0.2"/><circle cx="75" cy="75" r="1" fill="%23000" opacity="0.2"/><circle cx="50" cy="10" r="0.5" fill="%23000" opacity="0.1"/><circle cx="20" cy="80" r="0.5" fill="%23000" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>')`,
               }}
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-gray-200/30 via-gray-100/60 to-gray-50/40" />
+            <div className="absolute inset-0 bg-gradient-to-b from-gray-100/50 via-white/80 to-gray-50/50" />
           </div>
 
           <div className="relative z-10 max-w-6xl mx-auto px-6">
@@ -475,11 +499,11 @@ export default function PoetryGuide() {
               viewport={{ once: true }}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl md:text-4xl font-light text-gray-800 mb-4 tracking-tight">
+              <h2 className="text-3xl md:text-4xl font-light text-black mb-4 tracking-tight">
                 Ignite Your Creativity
               </h2>
-              <div className="w-16 h-px bg-gray-700 mx-auto mb-6"></div>
-              <p className="text-base text-gray-600 max-w-2xl mx-auto font-light leading-relaxed">
+              <div className="w-16 h-px bg-black mx-auto mb-6"></div>
+              <p className="text-base text-gray-700 max-w-2xl mx-auto font-light leading-relaxed">
                 Transformative exercises to awaken your inner poet
               </p>
             </motion.div>

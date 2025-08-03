@@ -9,7 +9,7 @@ export default function MasterTheCraftSection() {
         <div
           className="absolute inset-0 bg-cover bg-center w-full h-full scale-110"
           style={{
-            backgroundImage: `url('oggy.jpg')`,
+            backgroundImage: `url('https://assets.objkt.media/file/assets-003/QmQbjyKsYw5Z9ZApmUNoNP7zqwT271gjuk2wfEwjdFFc7g/artifact')`,
           }}
         />
         {/* Elegant overlay gradients */}
