@@ -25,7 +25,7 @@ const Footer = () => {
                   className="inline-flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors duration-300"
                 >
                   <Mail className="w-5 h-5" />
-                  <span className="text-sm">sucidesheep@gmail.com</span>
+                  <span className="text-sm">ftraveller23@gmail.com</span>
                 </a>
                 <div className="flex justify-center md:justify-start space-x-4 pt-2">
                   <a
@@ -44,7 +44,7 @@ const Footer = () => {
                     </svg>
                   </a>
                   <a
-                  href="https://github.com/Ftbhabok"
+                  href="https://github.com/ftbhabuk"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-500 hover:text-gray-900 transition-colors duration-300"

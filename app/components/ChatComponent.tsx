@@ -258,7 +258,7 @@ export default function ElegantPoetryChat() {
                   type="button"
                   onClick={handleFormSubmit}
                   disabled={isLoading}
-                  className="flex items-center gap-2 rounded-lg bg-stone-800 px-6 py-3 font-medium text-white transition-all duration-200 hover:bg-stone-700 disabled:bg-stone-400"
+                  className="flex items-center gap-2 rounded-lg bg-white-800 px-6 py-3 font-medium text-black transition-all duration-200 hover:bg-pink-50 disabled:bg-stone-400 border border-white-600"
                 >
                   {isLoading ? (
                     <>
@@ -267,8 +267,9 @@ export default function ElegantPoetryChat() {
                     </>
                   ) : (
                     <>
-                      <Sparkles className="h-4 w-4" />
-                      Generate
+                      {/* <Sparkles className="h-4 w-4" /> */}
+                      Bong
+                      <img src="/bongocat.gif" alt="Bongo Cat" className="w-8 h-8 ml-2 object-contain" />
                     </>
                   )}
                 </motion.button>

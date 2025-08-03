@@ -61,8 +61,7 @@ const techniques: Array<Omit<TechniqueCardProps, "index">> = [
     tagline: "Paint with words",
     icon: Palette,
     imageUrl:
-      "https://pbs.twimg.com/media/Gv_XArzXcAAojyo?format=jpg&name=medium",
-      // need to have gradeint overaly over image to make it look more darker for image plus blurred or faded edges
+      "https://pbs.twimg.com/media/GxJ7NqtWkAA3sK-?format=jpg&name=4096x4096",
     tips: [
       "Use specific, concrete details over abstract concepts",
       "Appeal to multiple senses, not just sight",
@@ -77,7 +76,7 @@ const techniques: Array<Omit<TechniqueCardProps, "index">> = [
     tagline: "Music in motion",
     icon: Music,
     imageUrl:
-      "https://plus.unsplash.com/premium_photo-1747852026439-b159abd44ee2?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8NTV8emFfUHFOdWNIX2t8fGVufDB8fHx8fA%3D%3D",
+      "https://plus.unsplash.com/premium_photo-1675813860314-e1227a8cc5bc?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE0fHx8ZW58MHx8fHx8",
     tips: [
       "Experiment with alliteration and consonance for texture",
       "Use internal rhyme and assonance for melody",
@@ -97,7 +96,7 @@ const techniques: Array<Omit<TechniqueCardProps, "index">> = [
       "Develop fresh comparisons that surprise yet feel inevitable",
       "Build extended metaphors that sustain throughout the poem",
       "Choose symbols that carry personal and universal weight",
-      "Allow multiple interpretations without losing focus",
+      // "Allow multiple interpretations without losing focus",
     ],
   },
   {
@@ -107,7 +106,7 @@ const techniques: Array<Omit<TechniqueCardProps, "index">> = [
     tagline: "Authentic connection",
     icon: Heart,
     imageUrl:
-      "https://images.unsplash.com/photo-1740448374472-1cb706feb965?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxNzB8fHxlbnwwfHx8fHw%3D",
+      "https://pbs.twimg.com/media/GxQ5SKjaIAIEy6I?format=jpg&name=large",
     tips: [
       "Mine your personal experiences for universal truths",
       "Express complex emotions with surgical precision",
@@ -122,7 +121,8 @@ const techniques: Array<Omit<TechniqueCardProps, "index">> = [
     tagline: "Purposeful design",
     icon: BookMarked,
     imageUrl:
-      "https://plus.unsplash.com/premium_photo-1747851905755-c8dad9d3fe24?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8NDZ8emFfUHFOdWNIX2t8fGVufDB8fHx8fA%3D%3D",
+      // "https://plus.unsplash.com/premium_photo-1747851905755-c8dad9d3fe24?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8NDZ8emFfUHFOdWNIX2t8fGVufDB8fHx8fA%3D%3D",
+      "https://assets.objkt.media/file/assets-003/QmfMUGn43W8eHLUytjUBYepuEtB4e2BYX9VoPsB3Zj5QSa/artifact",
     tips: [
       "Select forms that complement your subject matter",
       "Use line breaks and stanza breaks with intention",
@@ -137,7 +137,7 @@ const techniques: Array<Omit<TechniqueCardProps, "index">> = [
     tagline: "Your unique voice",
     icon: Users,
     imageUrl:
-      "https://plus.unsplash.com/premium_photo-1747852026439-b159abd44ee2?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8NTV8emFfUHFOdWNIX2t8fGVufDB8fHx8fA%3D%3D",
+      "https://pbs.twimg.com/media/GxZwofWXUAAr2fv?format=jpg&name=4096x4096",
     tips: [
       "Develop authentic expression that feels genuinely yours",
       "Experiment with different personas and speakers",
@@ -227,6 +227,26 @@ const TechniqueCard: React.FC<TechniqueCardProps> = ({
 }) => {
   const isImageLeft = index % 2 === 0;
 
+  // Different positioning for each technique
+  const getTipsPosition = () => {
+    switch (index) {
+      case 0: // Imagery - move up 7cm (280px)
+        return "absolute top-0 left-0 md:-top-56 md:left-14 max-w-xs z-20";
+      case 1: // Sound & Rhythm - move down 3cm (120px)
+        return "absolute top-0 left-0 md:top-28 md:left-14 max-w-xs z-20";
+      case 2: // Metaphor & Symbolism - move down 3cm (120px)
+        return "absolute top-0 left-0 md:top-28 md:left-14 max-w-xs z-20";
+      case 3: // Emotional Truth - move down 3cm (120px)
+        return "absolute top-0 left-0 md:top-28 md:left-14 max-w-xs z-20";
+      case 4: // Structure & Form - move down 3cm (120px)
+        return "absolute top-0 left-0 md:top-28 md:left-14 max-w-xs z-20";
+      case 5: // Voice & Perspective - move down 3cm (120px)
+        return "absolute top-0 left-0 md:top-28 md:left-14 max-w-xs z-20";
+      default:
+        return "absolute top-0 left-0 md:-top-2 md:left-14 max-w-xs z-20";
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -235,7 +255,7 @@ const TechniqueCard: React.FC<TechniqueCardProps> = ({
       viewport={{ once: true, amount: 0.3 }}
       className="relative w-screen h-screen overflow-hidden"
     >
-      {/* Simple Background Image with Minimal Overlay */}
+      {/* Background Image with Gradient Overlay */}
       <div className="absolute inset-0 w-full h-full">
         <div
           className="absolute inset-0 bg-cover bg-center w-full h-full scale-110"
@@ -243,9 +263,11 @@ const TechniqueCard: React.FC<TechniqueCardProps> = ({
             backgroundImage: `url(${imageUrl})`,
           }}
         />
-        
-        {/* Slightly darker overlay for better text readability */}
-        <div className="absolute inset-0 bg-black/35" />
+
+        {/* Increased gradient overlay for more dimming */}
+       {/* Enhanced overlay system for better text readability */}
+       <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/60" />
       </div>
 
       <div className="relative z-10 w-full h-full flex items-center justify-center px-6">
@@ -254,6 +276,31 @@ const TechniqueCard: React.FC<TechniqueCardProps> = ({
             className={`flex flex-col ${isImageLeft ? "md:flex-row" : "md:flex-row-reverse"} items-center gap-16`}
           >
             <div className="w-full md:w-1/2 relative">
+              {/* Tips section - positioned above the tagline on the left side */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+                className={getTipsPosition()}
+              >
+                <div className="bg-black/9 backdrop-blur-sm border border-white/30 rounded-lg p-4">
+                  <h5 className="text-white font-medium mb-3 text-sm uppercase tracking-wider">
+                    Key Tips
+                  </h5>
+                  <ul className="space-y-1">
+                    {tips.map((tip, tipIndex) => (
+                      <li
+                        key={tipIndex}
+                        className="text-white/90 text-xs leading-relaxed font-light"
+                      >
+                        • {tip}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </motion.div>
+
               <div className="absolute top-0 left-0 md:-top-8 md:left-8">
                 <h3 className="text-4xl md:text-5xl lg:text-6xl font-thin text-white/90 tracking-wider italic">
                   {tagline}
@@ -262,9 +309,9 @@ const TechniqueCard: React.FC<TechniqueCardProps> = ({
               </div>
             </div>
             <div className="w-full md:w-1/2 flex flex-col justify-center space-y-6 relative">
-            <p className="text-white/80 text-lg md:text-xl leading-relaxed font-light max-w-md mt-4 mr-10">
-  {description}
-</p>
+              <p className="text-white/80 text-lg md:text-xl leading-relaxed font-light max-w-md mt-4 mr-10">
+                {description}
+              </p>
               <div className="space-y-2">
                 <h4 className="text-4xl md:text-5xl font-bold text-white/70 tracking-wide">
                   {title}
@@ -278,31 +325,6 @@ const TechniqueCard: React.FC<TechniqueCardProps> = ({
                   you write.
                 </p>
               </div>
-              
-              {/* Tips section - positioned to not block content */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-                className="absolute top-10 right-10 max-w-xs"
-              >
-                <div className="bg-black/60 backdrop-blur-sm border border-white/30 rounded-lg p-4">
-                  <h5 className="text-white font-medium mb-3 text-sm uppercase tracking-wider">
-                    Key Tips
-                  </h5>
-                  <ul className="space-y-2">
-                    {tips.map((tip, tipIndex) => (
-                      <li
-                        key={tipIndex}
-                        className="text-white/90 text-xs leading-relaxed font-light"
-                      >
-                        • {tip}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </motion.div>
             </div>
           </div>
         </div>
@@ -408,7 +430,8 @@ export default function PoetryGuide() {
                 backgroundImage: `url('https://images.unsplash.com/photo-1516246830500-1fdf4d7be155?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`,
               }}
             />
-            <div className="absolute inset-0 bg-black/20" />
+            {/* Increased gradient overlay for more dimming */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/70" />
           </div>
 
           <motion.div
