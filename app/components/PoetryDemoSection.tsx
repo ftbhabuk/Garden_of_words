@@ -27,14 +27,14 @@ const PoetryDemoSection = () => {
   ];
 
   useEffect(() => {
-    setIsClient(true); // Confirm client-side rendering
+    setIsClient(true);
     const interval = setInterval(() => {
       setCurrentExample((prev) => (prev + 1) % poetryExamples.length);
     }, 5000);
     return () => clearInterval(interval);
   }, [poetryExamples.length]);
 
-  if (!isClient) return null; // Prevent rendering on server
+  if (!isClient) return null;
 
   return (
     <section className="py-32 relative min-h-screen">
@@ -72,21 +72,33 @@ const PoetryDemoSection = () => {
             className="relative"
           >
             <div className="aspect-video bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden">
-              <div className="w-full h-full bg-gradient-to-br from-white/5 to-transparent flex items-center justify-center">
-                <div className="text-center">
-                  <div className="w-20 h-20 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-6 border border-white/20">
-                    <svg className="w-8 h-8 text-white/70" fill="currentColor" viewBox="0 0 20 20">
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
+              <video
+                className="w-full h-full object-cover"
+                autoPlay
+                loop
+                muted
+                playsInline
+                poster="/video-poster.jpg" // Optional: add a poster image
+              >
+                {/* <source src="/final-demo.mkv" type="video/x-matroska" /> */}
+                <source src="/final-demo-clean.mp4" type="video/mp4" />
+                {/* Fallback for unsupported video */}
+                <div className="w-full h-full bg-gradient-to-br from-white/5 to-transparent flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-20 h-20 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-6 border border-white/20">
+                      <svg className="w-8 h-8 text-white/70" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                          fillRule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                    <p className="text-white/60 text-base font-light">Your creation process unfolds here</p>
+                    <p className="text-white/40 text-sm mt-2 font-light">Video not supported in this browser</p>
                   </div>
-                  <p className="text-white/60 text-base font-light">Your creation process unfolds here</p>
-                  <p className="text-white/40 text-sm mt-2 font-light">Showing the poetry generation journey</p>
                 </div>
-              </div>
+              </video>
             </div>
             <div className="absolute -top-3 -left-3 w-12 h-12 border-l-2 border-t-2 border-white/20 rounded-tl-2xl" />
             <div className="absolute -bottom-3 -right-3 w-12 h-12 border-r-2 border-b-2 border-white/20 rounded-br-2xl" />
